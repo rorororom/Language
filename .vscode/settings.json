@@ -1,6 +1,8 @@
 {
     "editor.inlineSuggest.showToolbar": "onHover",
     "files.associations": {
-        "complex": "cpp"
+        "complex": "cpp",
+        "ios": "cpp",
+        "__node_handle": "cpp"
     }
 }

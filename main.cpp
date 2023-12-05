@@ -16,11 +16,11 @@ void FuncFromFile(char* filename)
     //BuildTREEEE("./file/defInf4.txt");
     BuildTREEEE("./file/defInf4.txt", &differ_before);
 
-    double result = 0;
+    int result = 0;
     differ_before.variables->data[0].value = 2;
     result = EvaluateExpression(differ_before.tree->rootTree, differ_before.variables);
 
-    printf("answer = %.2lf\n", result);
+    printf("answer = %d\n", result);
 
     Differ differ_after = {};
     Tree treeDif = {};
@@ -36,11 +36,11 @@ void FuncFromFile(char* filename)
     GenerateImage(&differ_after);
     differ_after.tree->rootTree->parent = NULL;
 
-    TreeAndVarieblesDtor(&differ_after);
-    TreeAndVarieblesDtor(&differ_before);
+    // TreeAndVarieblesDtor(&differ_after);
+    // TreeAndVarieblesDtor(&differ_before);
 }
 
 int main()
 {
-    FuncFromFile("./file/defInf1.txt");
+    FuncFromFile("./file/defInf4.txt");
 }
