@@ -1,0 +1,87 @@
+\documentclass{article}
+\usepackage[a4paper]{geometry}
+\geometry{top=1.41cm, bottom=1.41cm, left=1.41cm, right=1.41cm, marginparwidth=1.75cm}
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english, russian]{babel}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{seqsplit}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{algorithmicx}
+\usepackage{mathalfa}
+\usepackage{mathrsfs}
+\usepackage{dsfont}
+\usepackage{caption,subcaption}
+\usepackage{wrapfig}
+\usepackage[stable]{footmisc}
+\usepackage{indentfirst}
+\usepackage{rotating}
+\usepackage{pdflscape}
+\usepackage{MnSymbol,wasysym}
+\title{<<To differentiate or not to differentiate? That is the question.>>}
+\author{Ромашкина Мария Б05-332}
+\begin{document}
+\maketitle
+\newpage
+We believe that in a world full of changes and surprises, the ability to distinguish,                   analyze, and highlight key moments is a true art. Differentiation is like a reliable map in the labyrinth of life,                   helping us navigate the turbulent reality. Imagine this: you stand on top of a mountain,                   and your knowledge of differential equations is like wings that allow you to soar freely in the air of change.                   It's not just mathematics; it's the ability to see beauty in structures and relationships. And if someone ever asks you,                   to differentiate or not to differentiate, you will definitely know the answer -                   let's unleash our potential and highlight the key moments in this exciting journey called Life.
+
+But, for now, while you are young...                   Party and enjoy yourself because youth will never come back,                   but knowing how to take derivatives, you can always Google that)
+
+If someone asks you why you're so tired:                   Differentiation doesn't take vacations. It just goes to infinity.
+The table of derivatives we will be using:
+$$sin(x)' =  cos( x ) \cdot 1 $$
+$$cos(x)' =  -1 \cdot sin( x ) \cdot 1 $$
+$$tg(x)' =  \frac { 1 } { ( cos( x ) ) ^ { 2 } } \cdot 1 $$
+$$cot(x)' =  \frac { 1 } { ( sin( x ) ) ^ { 2 } } \cdot -1 $$
+$$arcsin(x)' =  \frac { 1 } { \sqrt{ 1 - x ^ { 2 } } } $$
+$$arccos(x)' =  \frac { -1 \cdot 1 } { \sqrt{ 1 - x ^ { 2 } } } $$
+$$arctg(x)' =  \frac { 1 } { 1 + x ^ { 2 } } $$
+$$arccot(x)' =  \frac { -1 \cdot 1 } { 1 + x ^ { 2 } } $$
+$$ln(x)' =  \frac { 1 } { x } \cdot 1 $$
+
+\includegraphics[height=10cm]{img/img1_59077.png}
+
+$
+\text{When you differentiate, imagine that your variables are your favorite dumplings, and you're separating them to discover their secret recipe.}$
+$$f(x) =  sin( 15 \cdot x + 6 ) ^ { 3 } + cos( 15 \cdot x + 6 ) $$
+$
+\text{The key is to breathe calmly, then you can obtain:}$
+$$f'(x) =  3 \cdot ( sin( 15 \cdot x + 6 ) ) ^ { 3 - 1 } \cdot ( 0 \cdot x + 15 \cdot 1 + 0 ) * 0 \cdot x + 15 \cdot 1 + 0 + ( 0 \cdot x + 15 \cdot 1 + 0 ) * 0 \cdot x + 15 \cdot 1 + 0 $$
+
+\includegraphics[height=10cm]{img/img2_61298.png}
+
+$
+\text{When you differentiate, imagine that your variables are your favorite dumplings, and you're separating them to discover their secret recipe.}$
+$$f'(x) =  3 \cdot ( sin( 15 \cdot x + 6 ) ) ^ { 2 } \cdot ( 0 \cdot x + 15 \cdot 1 + 0 ) * 0 \cdot x + 15 \cdot 1 + 0 + ( 0 \cdot x + 15 \cdot 1 + 0 ) * 0 \cdot x + 15 \cdot 1 + 0 $$
+$
+\text{This is trivial.}$
+$$f'(x) =  3 \cdot ( sin( 15 \cdot x + 6 ) ) ^ { 2 } \cdot ( 0 \cdot x + 15 \cdot 1 ) * 0 \cdot x + 15 \cdot 1 + ( 0 \cdot x + 15 \cdot 1 + 0 ) * 0 \cdot x + 15 \cdot 1 + 0 $$
+$
+\text{Differentiate as if your life depends on it... and maybe it really does...}$
+$$f'(x) =  3 \cdot ( sin( 15 \cdot x + 6 ) ) ^ { 2 } \cdot ( 0 + 15 \cdot 1 ) * 0 + 15 \cdot 1 + ( 0 \cdot x + 15 \cdot 1 + 0 ) * 0 \cdot x + 15 \cdot 1 + 0 $$
+$
+\text{It's so difficult to live when there are only 24 hours in a day, it would be easier if there were more!}$
+$$f'(x) =  3 \cdot ( sin( 15 \cdot x + 6 ) ) ^ { 2 } \cdot ( 0 + 15 ) * 0 + 15 + ( 0 \cdot x + 15 \cdot 1 + 0 ) * 0 \cdot x + 15 \cdot 1 + 0 $$
+$
+\text{It is obvious that it turns out like this:}$
+$$f'(x) =  3 \cdot ( sin( 15 \cdot x + 6 ) ) ^ { 2 } \cdot ( 0 + 15 ) * 0 + 15 + ( 0 \cdot x + 15 \cdot 1 ) * 0 \cdot x + 15 \cdot 1 $$
+$
+\text{It is obvious that it turns out like this:}$
+$$f'(x) =  3 \cdot ( sin( 15 \cdot x + 6 ) ) ^ { 2 } \cdot ( 0 + 15 ) * 0 + 15 + ( 0 + 15 \cdot 1 ) * 0 + 15 \cdot 1 $$
+$
+\text{This is trivial.}$
+$$f'(x) =  3 \cdot ( sin( 15 \cdot x + 6 ) ) ^ { 2 } \cdot ( 0 + 15 ) * 0 + 15 + ( 0 + 15 ) * 0 + 15 $$
+$
+\text{As they say, well, here it is:}$
+$$f'(x) =  3 \cdot ( sin( 15 \cdot x + 6 ) ) ^ { 2 } \cdot cos( 15 \cdot x + 6 ) \cdot 15 + ( 0 + 15 ) * 0 + 15 $$
+$
+\text{When your equation is complex, differentiation brings ease into life!}$
+$$f'(x) =  3 \cdot ( sin( 15 \cdot x + 6 ) ) ^ { 2 } \cdot cos( 15 \cdot x + 6 ) \cdot 15 + -1 \cdot sin( 15 \cdot x + 6 ) \cdot 15 $$
+\newpage\begin{thebibliography}{9}\bibitem{lukashov}Lukashov, Alexey Leonidovich.\end{thebibliography}\end{document}

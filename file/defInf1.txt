@@ -1,0 +1,1 @@
+( ( ( ( ( ( nil 15 nil ) mul ( nil x nil ) ) add ( nil 6 nil ) ) sin nil ) pow ( nil 3 nil ) ) add ( ( ( ( nil x nil ) pow ( nil 3 nil ) ) sub ( nil 9 nil ) ) cos nil ) )

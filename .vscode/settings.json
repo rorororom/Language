@@ -1,0 +1,6 @@
+{
+    "editor.inlineSuggest.showToolbar": "onHover",
+    "files.associations": {
+        "complex": "cpp"
+    }
+}

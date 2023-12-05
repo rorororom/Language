@@ -1,0 +1,1 @@
+( ( ( ( ( nil 1 nil ) div ( nil x nil ) ) arctan nil ) add ( ( ( nil x nil ) sin nil ) mul ( ( nil x nil ) cos nil ) ) ) div ( ( nil 5 nil ) add ( ( nil 6 nil ) mul ( ( nil x nil ) sin nil ) ) )
