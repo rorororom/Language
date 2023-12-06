@@ -17,7 +17,7 @@ void FuncFromFile(char* filename)
     BuildTREEEE("./file/defInf4.txt", &differ_before);
 
     int result = 0;
-    differ_before.variables->data[0].value = 2;
+    differ_before.variables->data[0].value = 0;
     result = EvaluateExpression(differ_before.tree->rootTree, differ_before.variables);
 
     printf("answer = %d\n", result);

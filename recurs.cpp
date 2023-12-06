@@ -7,18 +7,24 @@
 #include "differentiation.h"
 #include "print_tree.h"
 
+#define BUF_V tokens[pBuf].value
+#define BUF_T tokens[pBuf].type
+#define BUF_L tokens[old_p].left
+#define BUF_R tokenss[old_p].right
+#define BUF tokens[old_p]
+
+int LINE_COUNT = 0;
+
 char* s = NULL;
 int p = 0;
 Variables arrayVar;
 int size = 0;
-Node* bufferS;
 int pBuf = 0;
 
 int BuildTREEEE(char* filename, Differ* differ_before)
 {
     FILE* file = fopen(filename, "r");
-    if (file == nullptr)
-    {
+    if (file == nullptr) {
         printf("Ошибка при открытии файла.\n");
     }
 
@@ -36,122 +42,113 @@ int BuildTREEEE(char* filename, Differ* differ_before)
     arrayVar.size = ZERO;
     arrayVar.data = (VariableData*)calloc(arrayVar.capacity, sizeof(VariableData));
 
-    bufferS = (Node*)calloc(1000, sizeof(Node));
-    TokenInizial();
-    printf("a = %d\n", pBuf);
-    for (int i = 0; i < pBuf; i++)
-    {
-        printf("%d: type = %d, values = %d\n", i, bufferS[i].type, bufferS[i].value);
-    }
+    Node* tokens = (Node*)calloc(1000, sizeof(Node));
+    TokenInizial(tokens);
     pBuf = 0;
-    Node* node = GetG();
-    printf("a = %d\n", pBuf);
+    Node* node = GetG(tokens);
+
     differ_before->tree->rootTree = node;
     differ_before->variables = &arrayVar;
     GenerateImage(differ_before);
-//     PrintTreeToFileWithoutBrackets(node, &arrayVar);
-//
-//     double result = EvaluateExpression(differ_before->tree->rootTree, differ_before->variables);
-//     printf("%lg\n", result);
     return 0;
 }
 
-
-
-Node* GetG()
+Node* GetG(Node* tokens)
 {
     pBuf = 0;
-    Node* node = GetE();
-    if (bufferS[pBuf].value != END) printf("ошибкаG\n");
-    printf("type = %d, values = %d\n", bufferS[pBuf].type, bufferS[pBuf].value);
+    Node* node = GetE(tokens);
+
+    if (BUF_V != END) printf("ошибкаG\n");
     return node;
 }
 
-Node* GetE()
+Node* GetE(Node* tokens)
 {
-    Node* node = GetT();
-    while (bufferS[pBuf].value == ADD || bufferS[pBuf].value == SUB) {
+    Node* node = GetT(tokens);
+
+    while (BUF_V == ADD || BUF_V == SUB) {
         int old_p = pBuf;
         pBuf++;
-        Node* node2 = GetT();
+        Node* node2 = GetT(tokens);
 
-        bufferS[old_p].left = node;
-        bufferS[old_p].right = node2;
-        node = &bufferS[old_p];
+        BUF_L = node;
+        BUF_R = node2;
+        node = &BUF;
     }
     return node;
 }
 
-Node* GetT()
+Node* GetT(Node* tokens)
 {
-    Node* node = GetW();
+    Node* node = GetW(tokens);
 
-    while (bufferS[pBuf].value == MUL || bufferS[pBuf].value == DIV || bufferS[pBuf].value == POW) {
+    while (BUF_V == MUL || BUF_V == DIV || BUF_V == POW) {
         int old_p = pBuf;
         pBuf++;
-        Node* node2 = GetW();
+        Node* node2 = GetW(tokens);
 
-        bufferS[old_p].left = node;
-        bufferS[old_p].right = node2;
-        node = &bufferS[old_p];
+        BUF_L = node;
+        BUF_R = node2;
+        node = &BUF;
     }
     return node;
 }
 
-Node* GetW()
+Node* GetW(Node* tokens)
 {
-    Node* node = GetP();
-    while (bufferS[pBuf].value == POW) {
+    Node* node = GetP(tokens);
+
+    while (BUF_V == POW) {
         int old_p = pBuf;
         pBuf++;
-        Node* node2 = GetP();
+        Node* node2 = GetP(tokens);
 
-        bufferS[old_p].left = node;
-        bufferS[old_p].right = node2;
-        node = &bufferS[old_p];
+        BUF_L = node;
+        BUF_R = node2;
+        node = &BUF;
     }
     return node;
 }
 
-Node* GetP()
+Node* GetP(Node* tokens)
 {
     Node* node = NULL;
 
-    if (bufferS[pBuf].value == SCOBKA) {
+    if (BUF_V == SCOBKA) {
         pBuf++;
-        node = GetE();
-        if (bufferS[pBuf].value != SCOBKA) printf("ошибкаP\n");
+        node = GetE(tokens);
+        if (BUF_V != SCOBKA) printf("ошибкаP\n");
         pBuf++;
     }
-    else if (bufferS[pBuf].type == OPERAT || bufferS[pBuf].type == VAR) {
-        node = GetO();
+    else if (BUF_T == OPERAT || BUF_T == VAR) {
+        node = GetO(tokens);
         if (node->type == OPERAT)
-            node->left = GetP();
+            node->left = GetP(tokens);
     }
     else {
-        node = GetN();
+        node = GetN(tokens);
     }
     return node;
 }
 
-Node* GetN()
+Node* GetN(Node* tokens)
 {
-    return &bufferS[pBuf++];
+    return &tokens[pBuf++];
 }
 
 #define SET_OPERATOR(op, OP, ...)                           \
-    if (pBuf < 1000 && 5 <= bufferS[pBuf].value && bufferS[pBuf].value <= 13 && OP == bufferS[pBuf].value) \
+    if (pBuf < NO_OP && SIN <= BUF_V && BUF_V <= ARCCOT && OP == BUF_V) \
     {                                                       \
-        return &bufferS[pBuf++];                                        \
+        return &tokens[pBuf++];                                        \
     }
 
 
-Node* GetO()
+Node* GetO(Node* tokens)
 {
     #include "operation.dsl"
     #undef SET_OPERATOR
 
-    return &bufferS[pBuf++];
+    return &tokens[pBuf++];
 }
 
 int GetNUM()
@@ -165,12 +162,14 @@ int GetNUM()
 }
 
 #define SET_OPERATOR(op, OP, ...)                           \
-    if (5 <= OP && OP <= 13 && strcmp(token, op) == 0)      \
+    if (SIN <= OP && OP <= ARCCOT && strcmp(token, op) == 0)      \
     {                                                       \
         return OP;                                          \
     }
 
-int GetOPERAT()
+#define INIT(type, val) InitializeNode(&tokens[pBuf++], type, val, NULL, NULL, NULL);
+
+int GetOPERAT(Node* tokens)
 {
     char token[OP_LEN] = "";
     int i = 0;
@@ -184,11 +183,11 @@ int GetOPERAT()
     #undef SET_OPERATOR
 
     int valVAR = AddVariable(&arrayVar, token, 0);
-    InitializeNode(&bufferS[pBuf++], VAR, valVAR, NULL, NULL, NULL);
-    return -1000;
+    InitializeNode(&tokens[pBuf++], VAR, valVAR, NULL, NULL, NULL);
+    return NO_OP;
 }
 
-void TokenInizial()
+void TokenInizial(Node* tokens)
 {
     int num = 0;
     while(p <= size)
@@ -196,52 +195,52 @@ void TokenInizial()
         switch(s[p])
         {
             case '(':
-                InitializeNode(&bufferS[pBuf++], OPERAT, SCOBKA, NULL, NULL, NULL);
+                INIT(OPERAT, SCOBKA);
                 p++;
                 break;
             case ')':
-                InitializeNode(&bufferS[pBuf++], OPERAT, SCOBKA, NULL, NULL, NULL);
+                INIT(OPERAT, SCOBKA);
                 p++;
                 break;
             case '\0':
-                InitializeNode(&bufferS[pBuf++], OPERAT, END, NULL, NULL, NULL);
+                INIT(OPERAT, END);
                 p++;
                 break;
             case '\n':
-                InitializeNode(&bufferS[pBuf++], OPERAT, SLASH, NULL, NULL, NULL);
+                LINE_COUNT++;
                 p++;
                 break;
             case '0': case '1': case '2': case '3': case '4':
             case '5': case '6': case '7': case '8': case '9':
                 num = GetNUM();
-                InitializeNode(&bufferS[pBuf++], INT, num, NULL, NULL, NULL);
+                INIT(INT, num);
                 break;
             case '+':
-                InitializeNode(&bufferS[pBuf++], OPERAT, ADD, NULL, NULL, NULL);
+                INIT(OPERAT, ADD);
                 p++;
                 break;
             case '-':
-                InitializeNode(&bufferS[pBuf++], OPERAT, SUB, NULL, NULL, NULL);
+                INIT(OPERAT, SUB);
                 p++;
                 break;
             case '*':
-                InitializeNode(&bufferS[pBuf++], OPERAT, MUL, NULL, NULL, NULL);
+                INIT(OPERAT, MUL);
                 p++;
                 break;
             case '^':
-                InitializeNode(&bufferS[pBuf++], OPERAT, POW, NULL, NULL, NULL);
+                INIT(OPERAT, POW);
                 p++;
                 break;
             case '/':
-                InitializeNode(&bufferS[pBuf++], OPERAT, DIV, NULL, NULL, NULL);
+                INIT(OPERAT, DIV);
                 p++;
                 break;
             default:
             {
                 if ('a' <= s[p] && s[p] <= 'z') {
-                    int valOP = GetOPERAT();
-                    if (valOP != -1000) {
-                        InitializeNode(&bufferS[pBuf++], OPERAT, valOP, NULL, NULL, NULL);
+                    int valOP = GetOPERAT(tokens);
+                    if (valOP != NO_OP) {
+                        INIT(OPERAT, valOP);
                         break;
                     }
                 }
