@@ -13,8 +13,7 @@ void FuncFromFile(char* filename)
 
     CtorRootAndVariebles(&differ_before);
 
-    //BuildTREEEE("./file/defInf4.txt");
-    BuildTREEEE("./file/defInf4.txt", &differ_before);
+    BuildTREEEE("../file/defInf4.txt", &differ_before);
 
 //     int result = 0;
 //     differ_before.variables->data[0].value = 0;

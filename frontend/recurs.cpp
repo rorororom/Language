@@ -97,16 +97,7 @@ Node* GetG(Node* tokens) {
     Node* node = NULL;
     fprintf(LOG_FILE, "я нахожусь в GetG, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
 
-    if (BUF_V == IF) {
-        fprintf(LOG_FILE, "я зашел в условие == If, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
-        node = GetIf(tokens);
-    } else if (BUF_V == WHILE) {
-        fprintf(LOG_FILE, "я зашел в условие == While, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
-        node = GetWhile(tokens);
-    } else {
-        fprintf(LOG_FILE, "я зашел в условие ELSE, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
-        node = GetA(tokens);
-    }
+    node = GetBody(tokens);
 
     if (BUF_V != END) printf("ошибкаG\n");
     return node;
@@ -151,7 +142,7 @@ Node* GetBody(Node* tokens)
             Node* nestedIf = GetIf(tokens);
             currentNode->left = nestedIf;
         } else {
-            Node* statement = GetG(tokens);
+            Node* statement = GetA(tokens);
             currentNode->left = statement;
         }
 

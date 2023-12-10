@@ -329,7 +329,7 @@ char* IssuesOperation(Node* node)
 void GenerateGraphImage()
 {
     char command[MAX_LEN] = "";
-    sprintf(command, "dot -Tpng /Users/aleksandr/Desktop/differentiation/grapth.dot\
+    sprintf(command, "dot -Tpng /Users/aleksandr/Desktop/language/grapth.dot\
                      -o /Users/aleksandr/Desktop/differentiation/file.png");
     system(command);
 }
@@ -609,7 +609,7 @@ void CreateNewGraph()
     sprintf(filename, "grath_%04d.png", imageCounter);
 
     char command[1000] = "";
-    sprintf(command, "dot -Tpng /Users/aleksandr/Desktop/language/grapth.dot -o /Users/aleksandr/Desktop/language/grapth/%s", filename);
+    sprintf(command, "dot -Tpng /Users/aleksandr/Desktop/language/frontend/grapth.dot -o /Users/aleksandr/Desktop/language/grapth/%s", filename);
     system(command);
 
     char path[100] = "/Users/aleksandr/Desktop/language/grapth/";

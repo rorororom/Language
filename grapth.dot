@@ -1,8 +1,0 @@
-digraph tree {
-	node [shape=Mrecord, style=filled,                            fillcolor="#bba6cd", color="#552d7b"];
-99368 [shape=record, style="filled,rounded", color=" #0000ff ",                          fillcolor="#d5a1a7", fontsize=14, label=" = "];
-	99368 -> 99328;
-99328 [shape=record, style="filled,rounded", color="#FF0000",                          fillcolor="#6495ed", fontsize=14, label=" x "];
-	99368 -> 99408;
-99408 [shape=record, style="filled,rounded", color="#552d7b",                          fillcolor="#bba6cd", fontsize=14, label=" 5 "];
-}
