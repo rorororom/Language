@@ -8,7 +8,7 @@
 
 const int MAX_LEN = 256;
 const int MAX_VARIABLES = 10;
-const int CAPACITY = 10;
+const int CAPACITY = 100;
 const int ZERO = 0;
 const double E_CONST = 2.71;
 const int ERROR_OP = -100;
@@ -29,7 +29,8 @@ typedef struct Tree {
 
 typedef struct VariableData {
     char* name;
-    double value;
+    int value;
+    int type;
 } VariableData;
 
 typedef struct Variables {
@@ -44,8 +45,10 @@ typedef struct Differ {
 } Differ;
 
 enum OPERATION{
-    OperError = -4,
+    OperError = -6,
     SCOBKA,
+    OPEN_BRACE,
+    CLOSE_BRACE,
     SLASH,
     END,
     SUB = 0,
@@ -54,14 +57,20 @@ enum OPERATION{
     MUL,
     POW,
     SIN = 5,
-    COS,
-    TAN,
-    COT,
-    LN,
-    ARCSIN,
-    ARCCOS,
-    ARCTAN,
-    ARCCOT
+    COS = 6,
+    TAN = 7,
+    COT = 8,
+    LN = 9,
+    ARCSIN = 10,
+    ARCCOS = 11,
+    ARCTAN = 12,
+    ARCCOT = 13,
+    IF = 14,
+    EQ = 15,
+    SEMICOLON = 16,
+    WHILE,
+    MORE,
+    LESS
 };
 
 enum TYPE{
@@ -91,7 +100,7 @@ Node* Dif(Node* nowNode);
 void TransformationNode(Node** nowNode, int* changeCount, Variables* arrayVar, Tree* treeDif, Lines* text);
 
 int GetVariableIdByName(Variables* arrayVar, const char* variableName);
-int AddVariable(Variables* arrayVar, const char*  variableName, const double variableValue);
+int AddVariable(Variables* arrayVar, const char*  variableName, const int variableValue);
 
 Node* ReadFromBufferInf(Buffer* array, Node* currentNode, Variables* arrayVar);
 

@@ -6,11 +6,12 @@
 #include "read_from_file_in_buffer.h"
 #include "differentiation.h"
 #include "print_tree.h"
+#include "log_funcs.h"
 
 #define BUF_V tokens[pBuf].value
 #define BUF_T tokens[pBuf].type
 #define BUF_L tokens[old_p].left
-#define BUF_R tokenss[old_p].right
+#define BUF_R tokens[old_p].right
 #define BUF tokens[old_p]
 
 int LINE_COUNT = 0;
@@ -20,6 +21,29 @@ int p = 0;
 Variables arrayVar;
 int size = 0;
 int pBuf = 0;
+
+void AddNewId(int type, int val, char* name)
+{
+    arrayVar.data[arrayVar.size].type = type;
+    arrayVar.data[arrayVar.size].value = val;
+    arrayVar.data[arrayVar.size].name = name;
+    arrayVar.size++;
+}
+
+void CreatId()
+{
+    AddNewId(OPERAT, SIN, "sin");
+    AddNewId(OPERAT, COS, "cos");
+    AddNewId(OPERAT, TAN, "tg");
+    AddNewId(OPERAT, COT, "ctg");
+    AddNewId(OPERAT, LN, "ln");
+    AddNewId(OPERAT, ARCSIN, "arcsin");
+    AddNewId(OPERAT, ARCCOS, "arccos");
+    AddNewId(OPERAT, ARCCOT, "arctg");
+    AddNewId(OPERAT, ARCTAN, "arcctg");
+    AddNewId(OPERAT, IF, "if");
+    AddNewId(OPERAT, EQ, "=");
+}
 
 int BuildTREEEE(char* filename, Differ* differ_before)
 {
@@ -41,9 +65,24 @@ int BuildTREEEE(char* filename, Differ* differ_before)
     arrayVar.capacity = CAPACITY;
     arrayVar.size = ZERO;
     arrayVar.data = (VariableData*)calloc(arrayVar.capacity, sizeof(VariableData));
+    CreatId();
+
+    for (int i = 0; i < arrayVar.size; i++)
+    {
+        printf("%s\n", arrayVar.data[i].name);
+    }
 
     Node* tokens = (Node*)calloc(1000, sizeof(Node));
+    printf("AAAAAA\n");
+    for (int i = 0; i < array.size; i++)
+    {
+        printf("%d: %d\n", i, int(s[i]));
+    }
     TokenInizial(tokens);
+    for (int i = 0; i < pBuf; i++)
+    {
+        printf("%d: type = %d, values = %d\n", i, tokens[i].type, tokens[i].value);
+    }
     pBuf = 0;
     Node* node = GetG(tokens);
 
@@ -53,12 +92,168 @@ int BuildTREEEE(char* filename, Differ* differ_before)
     return 0;
 }
 
-Node* GetG(Node* tokens)
-{
-    pBuf = 0;
-    Node* node = GetE(tokens);
+
+Node* GetG(Node* tokens) {
+    Node* node = NULL;
+    fprintf(LOG_FILE, "я нахожусь в GetG, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
+
+    if (BUF_V == IF) {
+        fprintf(LOG_FILE, "я зашел в условие == If, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
+        node = GetIf(tokens);
+    } else if (BUF_V == WHILE) {
+        fprintf(LOG_FILE, "я зашел в условие == While, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
+        node = GetWhile(tokens);
+    } else {
+        fprintf(LOG_FILE, "я зашел в условие ELSE, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
+        node = GetA(tokens);
+    }
 
     if (BUF_V != END) printf("ошибкаG\n");
+    return node;
+}
+
+// Новые функции для IF и While:
+Node* GetIf(Node* tokens) {
+    Node* ifNode = &tokens[pBuf++];
+    if (BUF_V != SCOBKA) {
+        printf("Ошибка: ожидается '}' после блока While\n");
+    }
+    pBuf++;
+    Node* condition = GetA(tokens);
+    // printf("AA + %d, condition value: %d\n", pBuf, condition->value);
+    if (BUF_V != SCOBKA) {
+        printf("Ошибка: ожидается '}' после блока While\n");
+    }
+    pBuf++;
+    if (BUF_V != OPEN_BRACE) {
+        printf("Ошибка: ожидается '{' после условия IF\n");
+        return NULL;
+    }
+
+    pBuf++;  // Пропустить '{'
+
+    Node* ifBody = GetG(tokens);
+
+    if (BUF_V != CLOSE_BRACE) {
+        printf("Ошибка: ожидается '}' после блока IF\n");
+        return NULL;
+    }
+
+    pBuf++;  // Пропустить '}'
+
+    ifNode->left = condition;
+    ifNode->right = ifBody;
+
+    return ifNode;
+}
+
+Node* GetWhileBody(Node* tokens)
+{
+    CREAT_NODE(whileBodyNode);
+    InitializeNode(whileBodyNode, OPERAT, SEMICOLON, NULL, NULL, NULL);
+
+    Node* currentNode = whileBodyNode;
+
+    while (BUF_V != CLOSE_BRACE && BUF_V != END) {
+        if (BUF_V == WHILE) {
+            Node* nestedWhile = GetWhile(tokens);
+            currentNode->left = nestedWhile;
+        } else {
+            Node* statement = GetG(tokens);
+            currentNode->left = statement;
+        }
+
+        pBuf++;
+
+        if (BUF_V != CLOSE_BRACE && BUF_V != END) {
+            CREAT_NODE(nextStatement);
+            InitializeNode(nextStatement, OPERAT, SEMICOLON, NULL, NULL, NULL);
+            currentNode->right = nextStatement;
+            currentNode = nextStatement;
+        }
+    }
+    return whileBodyNode;
+}
+
+Node* GetWhile(Node* tokens) {
+    fprintf(LOG_FILE, "я нахожусь в GetWhile, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
+    Node* whileNode = &tokens[pBuf++];
+    fprintf(LOG_FILE, "я собираюсь вызвать GetE, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
+
+    if (BUF_V != SCOBKA) {
+        printf("Ошибка: ожидается '(' после блока While\n");
+    }
+    pBuf++;
+
+    Node* condition = GetA(tokens);
+
+    if (BUF_V != SCOBKA) {
+        printf("Ошибка: ожидается ')' после блока While\n");
+    }
+    pBuf++;
+
+    fprintf(LOG_FILE, "я после вызова GetE, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
+
+    if (BUF_V != OPEN_BRACE) {
+        printf("Ошибка: ожидается '{' после условия While\n");
+        return NULL;
+    }
+
+    pBuf++;  // Пропустить '{'
+
+    whileNode->left = condition;
+    whileNode->right = GetWhileBody(tokens);
+
+    return whileNode;
+}
+
+
+Node* GetId(Node* tokens)
+{
+    if (tokens[pBuf].type == VAR) {
+        return &tokens[pBuf++];
+    }
+    else return NULL;
+}
+
+Node* GetA(Node* tokens)
+{
+    int old_p = pBuf;
+    fprintf(LOG_FILE, "я нахожусь в GetA, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
+    fprintf(LOG_FILE, "я вызываю GetId, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
+    Node* node = GetId(tokens);
+    fprintf(LOG_FILE, "я вызвал GetId, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
+    if (node == NULL)
+    {
+        fprintf(LOG_FILE, "Это не переменная, я вызываю GetE, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
+        node = GetE(tokens);
+        fprintf(LOG_FILE, "Я вызвал GetE, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
+    }
+    else if (tokens[pBuf].value != EQ && tokens[pBuf].value != MORE && tokens[pBuf].value != LESS)
+    {
+        fprintf(LOG_FILE, "Это переменная, но дальне не равно, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
+        pBuf = old_p;
+        fprintf(LOG_FILE, "Я вызываю GetE, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
+        node = GetE(tokens);
+        fprintf(LOG_FILE, "Я просто вызова GetE, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
+    }
+    else {
+        Node* main;
+        if ((tokens[pBuf].value == EQ   ||
+            tokens[pBuf].value == MORE  ||
+            tokens[pBuf].value == LESS) &&
+            tokens[pBuf].type == OPERAT)
+        {
+            main = &tokens[pBuf];
+            pBuf++;
+        }
+        fprintf(LOG_FILE, "Я вызываю GetE для записи правого ребенка у EQ, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
+        Node* node2 = GetE(tokens);
+        Node* nodeL = node;
+        node = main;
+        node->left = nodeL;
+        node->right = node2;
+    }
     return node;
 }
 
@@ -137,7 +332,8 @@ Node* GetN(Node* tokens)
 }
 
 #define SET_OPERATOR(op, OP, ...)                           \
-    if (pBuf < NO_OP && SIN <= BUF_V && BUF_V <= ARCCOT && OP == BUF_V) \
+    if (BUF_V == EQ) printf("ADFGBNKEPODVS\n"); \
+    if (pBuf < NO_OP && SIN <= BUF_V && BUF_V <= EQ && OP == BUF_V) \
     {                                                       \
         return &tokens[pBuf++];                                        \
     }
@@ -162,7 +358,7 @@ int GetNUM()
 }
 
 #define SET_OPERATOR(op, OP, ...)                           \
-    if (SIN <= OP && OP <= ARCCOT && strcmp(token, op) == 0)      \
+    if (SIN <= OP && OP <=LESS && strcmp(token, op) == 0)      \
     {                                                       \
         return OP;                                          \
     }
@@ -202,14 +398,30 @@ void TokenInizial(Node* tokens)
                 INIT(OPERAT, SCOBKA);
                 p++;
                 break;
+            case '{':
+                INIT(OPERAT, OPEN_BRACE);
+                p++;
+                break;
+            case '}':
+                INIT(OPERAT, CLOSE_BRACE);
+                p++;
+                break;
             case '\0':
-                INIT(OPERAT, END);
-                p++;
-                break;
-            case '\n':
-                LINE_COUNT++;
-                p++;
-                break;
+                if (p < size) {
+                    p++;
+                    break;
+                }
+                else {
+                    INIT(OPERAT, END);
+                    p++;
+                    break;
+                }
+            // case '\n':
+            //     LINE_COUNT++;
+            //     p++;
+            //     printf("asdf\n");
+            //     if (s[p] == '\0') p++;
+            //     break;
             case '0': case '1': case '2': case '3': case '4':
             case '5': case '6': case '7': case '8': case '9':
                 num = GetNUM();
@@ -219,8 +431,20 @@ void TokenInizial(Node* tokens)
                 INIT(OPERAT, ADD);
                 p++;
                 break;
+            case '>':
+                INIT(OPERAT, MORE);
+                p++;
+                break;
+            case '<':
+                INIT(OPERAT, LESS);
+                p++;
+                break;
             case '-':
                 INIT(OPERAT, SUB);
+                p++;
+                break;
+            case ';':
+                INIT(OPERAT, SEMICOLON);
                 p++;
                 break;
             case '*':
@@ -233,6 +457,10 @@ void TokenInizial(Node* tokens)
                 break;
             case '/':
                 INIT(OPERAT, DIV);
+                p++;
+                break;
+            case '=':
+                INIT(OPERAT, EQ);
                 p++;
                 break;
             default:

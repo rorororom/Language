@@ -72,6 +72,55 @@ SET_OPERATOR("cos", COS, "cos", "cos",
         return _MUL(_MUL(NODE_INT(-1), _SIN(COPYL)), DIFL);
     })
 
+SET_OPERATOR("if", IF, "if", "if",
+    {
+        ;
+    },
+    {
+        ;
+    })
+
+SET_OPERATOR(";", SEMICOLON, ";", ";",
+    {
+        ;
+    },
+    {
+        ;
+    })
+
+SET_OPERATOR("=", EQ, "=", "=",
+    {
+        ;
+    },
+    {
+        ;
+    })
+
+SET_OPERATOR("while", WHILE, "while", "while",
+    {
+        ;
+    },
+    {
+        ;
+    })
+
+SET_OPERATOR("!", MORE, "!", ">",
+    {
+        ;
+    },
+    {
+        ;
+    })
+
+SET_OPERATOR("@", LESS, "@", "<",
+    {
+        ;
+    },
+    {
+        ;
+    })
+
+
 SET_OPERATOR("tg", TAN, "tg", "tg",
     {
         return tan(leftValue);

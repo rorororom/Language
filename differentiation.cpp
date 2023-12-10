@@ -200,10 +200,17 @@ void SetNodeTypeAndValue(Node* node, char* value, Variables* arrayVar)
         SetVariableValue(node, value, arrayVar);
 }
 
-int AddVariable(Variables* arrayVar, const char*  variableName, const double variableValue)
+int AddVariable(Variables* arrayVar, const char*  variableName, const int variableValue)
 {
     assert(arrayVar);
     assert(variableName);
+
+    int cnt = 0;
+    for (cnt; cnt < arrayVar->size; cnt++)
+    {
+        if (strcmp(variableName, arrayVar->data[cnt].name) == 0)
+            return cnt;
+    }
 
     arrayVar->data[arrayVar->size].name  = strdup(variableName);
 
@@ -211,6 +218,7 @@ int AddVariable(Variables* arrayVar, const char*  variableName, const double var
         return -1;
 
     arrayVar->data[arrayVar->size].value = variableValue;
+    arrayVar->data[arrayVar->size].type = VAR;
     arrayVar->size++;
 
     return arrayVar->size - 1;
@@ -257,7 +265,7 @@ void GenerateImage(Differ* differ)
 static void PrintNodeDump(FILE* dotFile, Node* node, Variables* arrayVar, const char* fillColor)
 {
     assert(dotFile);
-    assert(node);
+    //assert(node);
     assert(fillColor);
 
     if (node == NULL) return;
