@@ -112,7 +112,6 @@ Node* GetG(Node* tokens) {
     return node;
 }
 
-// Новые функции для IF и While:
 Node* GetIf(Node* tokens) {
     Node* ifNode = &tokens[pBuf++];
     if (BUF_V != SCOBKA) {
@@ -120,7 +119,6 @@ Node* GetIf(Node* tokens) {
     }
     pBuf++;
     Node* condition = GetA(tokens);
-    // printf("AA + %d, condition value: %d\n", pBuf, condition->value);
     if (BUF_V != SCOBKA) {
         printf("Ошибка: ожидается '}' после блока While\n");
     }
@@ -132,22 +130,13 @@ Node* GetIf(Node* tokens) {
 
     pBuf++;  // Пропустить '{'
 
-    Node* ifBody = GetG(tokens);
-
-    if (BUF_V != CLOSE_BRACE) {
-        printf("Ошибка: ожидается '}' после блока IF\n");
-        return NULL;
-    }
-
-    pBuf++;  // Пропустить '}'
-
     ifNode->left = condition;
-    ifNode->right = ifBody;
+    ifNode->right = GetBody(tokens);
 
     return ifNode;
 }
 
-Node* GetWhileBody(Node* tokens)
+Node* GetBody(Node* tokens)
 {
     CREAT_NODE(whileBodyNode);
     InitializeNode(whileBodyNode, OPERAT, SEMICOLON, NULL, NULL, NULL);
@@ -158,6 +147,9 @@ Node* GetWhileBody(Node* tokens)
         if (BUF_V == WHILE) {
             Node* nestedWhile = GetWhile(tokens);
             currentNode->left = nestedWhile;
+        } else if (BUF_V == IF) {
+            Node* nestedIf = GetIf(tokens);
+            currentNode->left = nestedIf;
         } else {
             Node* statement = GetG(tokens);
             currentNode->left = statement;
@@ -174,6 +166,7 @@ Node* GetWhileBody(Node* tokens)
     }
     return whileBodyNode;
 }
+
 
 Node* GetWhile(Node* tokens) {
     fprintf(LOG_FILE, "я нахожусь в GetWhile, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
@@ -202,7 +195,7 @@ Node* GetWhile(Node* tokens) {
     pBuf++;  // Пропустить '{'
 
     whileNode->left = condition;
-    whileNode->right = GetWhileBody(tokens);
+    whileNode->right = GetBody(tokens);
 
     return whileNode;
 }
@@ -219,23 +212,15 @@ Node* GetId(Node* tokens)
 Node* GetA(Node* tokens)
 {
     int old_p = pBuf;
-    fprintf(LOG_FILE, "я нахожусь в GetA, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
-    fprintf(LOG_FILE, "я вызываю GetId, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
     Node* node = GetId(tokens);
-    fprintf(LOG_FILE, "я вызвал GetId, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
     if (node == NULL)
     {
-        fprintf(LOG_FILE, "Это не переменная, я вызываю GetE, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
         node = GetE(tokens);
-        fprintf(LOG_FILE, "Я вызвал GetE, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
     }
     else if (tokens[pBuf].value != EQ && tokens[pBuf].value != MORE && tokens[pBuf].value != LESS)
     {
-        fprintf(LOG_FILE, "Это переменная, но дальне не равно, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
         pBuf = old_p;
-        fprintf(LOG_FILE, "Я вызываю GetE, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
         node = GetE(tokens);
-        fprintf(LOG_FILE, "Я просто вызова GetE, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
     }
     else {
         Node* main;
@@ -247,7 +232,6 @@ Node* GetA(Node* tokens)
             main = &tokens[pBuf];
             pBuf++;
         }
-        fprintf(LOG_FILE, "Я вызываю GetE для записи правого ребенка у EQ, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
         Node* node2 = GetE(tokens);
         Node* nodeL = node;
         node = main;

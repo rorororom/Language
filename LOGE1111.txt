@@ -1,42 +1,12 @@
 <hr/>
 <p>Open File</p>
-<meta charset="UTF-8"><p>Time is 2023-12-10 14:09:20</p>
+<meta charset="UTF-8"><p>Time is 2023-12-10 14:22:45</p>
 я нахожусь в GetG, pbuf = 0, token = 7
-я зашел в условие == While, pbuf = 0, token = 7
-я нахожусь в GetWhile, pbuf = 0, token = 7
-я собираюсь вызвать GetE, pbuf = 1, token = 7
-я нахожусь в GetA, pbuf = 2, token = 7
-я вызываю GetId, pbuf = 2, token = 7
-я вызвал GetId, pbuf = 3, token = 7
-Я вызываю GetE для записи правого ребенка у EQ, pbuf = 4, token = 7
-я после вызова GetE, pbuf = 6, token = 7
-я нахожусь в GetG, pbuf = 7, token = 7
-я зашел в условие ELSE, pbuf = 7, token = 7
-я нахожусь в GetA, pbuf = 7, token = 7
-я вызываю GetId, pbuf = 7, token = 7
-я вызвал GetId, pbuf = 8, token = 7
-Я вызываю GetE для записи правого ребенка у EQ, pbuf = 9, token = 7
-я нахожусь в GetWhile, pbuf = 13, token = 7
-я собираюсь вызвать GetE, pbuf = 14, token = 7
-я нахожусь в GetA, pbuf = 15, token = 7
-я вызываю GetId, pbuf = 15, token = 7
-я вызвал GetId, pbuf = 16, token = 7
-Я вызываю GetE для записи правого ребенка у EQ, pbuf = 17, token = 7
-я после вызова GetE, pbuf = 19, token = 7
-я нахожусь в GetG, pbuf = 20, token = 7
-я зашел в условие ELSE, pbuf = 20, token = 7
-я нахожусь в GetA, pbuf = 20, token = 7
-я вызываю GetId, pbuf = 20, token = 7
-я вызвал GetId, pbuf = 21, token = 7
-Я вызываю GetE для записи правого ребенка у EQ, pbuf = 22, token = 7
-я нахожусь в GetG, pbuf = 26, token = 7
-я зашел в условие ELSE, pbuf = 26, token = 7
-я нахожусь в GetA, pbuf = 26, token = 7
-я вызываю GetId, pbuf = 26, token = 7
-я вызвал GetId, pbuf = 27, token = 7
-Это переменная, но дальне не равно, pbuf = 27, token = 7
-Я вызываю GetE, pbuf = 26, token = 7
-Я просто вызова GetE, pbuf = 31, token = 7
+я зашел в условие ELSE, pbuf = 0, token = 7
+я нахожусь в GetA, pbuf = 0, token = 7
+я вызываю GetId, pbuf = 0, token = 7
+я вызвал GetId, pbuf = 1, token = 7
+Я вызываю GetE для записи правого ребенка у EQ, pbuf = 2, token = 7
 <div style="display: block; margin-bottom: 20px;"><img src="/Users/aleksandr/Desktop/language/grapth/grath_0000.png" alt="Graph Image"></div>
 
 <p>Close File</p>

@@ -21,6 +21,6 @@ Node* GetW(Node* tokens);
 Node* GetO(Node* tokens);
 Node* GetIf(Node* tokens);
 Node* GetWhile(Node* tokens);
-Node* GetMultipleStatements(Node* tokens);
+Node* GetBody(Node* tokens);
 //void BuildTREEEE(char* filename);
 #endif
