@@ -42,7 +42,7 @@ void CreatId()
     AddNewId(OPERAT, ARCCOT, "arctg");
     AddNewId(OPERAT, ARCTAN, "arcctg");
     AddNewId(OPERAT, IF, "if");
-    AddNewId(OPERAT, EQ, "=");
+    AddNewId(OPERAT, WHILE, "while");
 }
 
 int BuildTREEEE(char* filename, Differ* differ_before)
@@ -67,17 +67,7 @@ int BuildTREEEE(char* filename, Differ* differ_before)
     arrayVar.data = (VariableData*)calloc(arrayVar.capacity, sizeof(VariableData));
     CreatId();
 
-    for (int i = 0; i < arrayVar.size; i++)
-    {
-        printf("%s\n", arrayVar.data[i].name);
-    }
-
     Node* tokens = (Node*)calloc(1000, sizeof(Node));
-    printf("AAAAAA\n");
-    for (int i = 0; i < array.size; i++)
-    {
-        printf("%d: %d\n", i, int(s[i]));
-    }
     TokenInizial(tokens);
     for (int i = 0; i < pBuf; i++)
     {
@@ -158,6 +148,44 @@ Node* GetBody(Node* tokens)
     return whileBodyNode;
 }
 
+// Node* GetWhile(Node* tokens) {
+//     fprintf(LOG_FILE, "я нахожусь в GetWhile, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
+//     Node* whileNode = &tokens[pBuf++];
+//     fprintf(LOG_FILE, "я собираюсь вызвать GetE, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
+//
+//     fprintf(LOG_FILE, "я после вызова GetE, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
+//
+//     if (BUF_V != OPEN_BRACE) {
+//         printf("Ошибка: ожидается '{' после условия While\n");
+//         return NULL;
+//     }
+//     pBuf++;  // Пропустить '{'
+//
+//     Node* uslovie = GetBody(tokens);
+//
+//     if (BUF_V != CLOSE_BRACE) {
+//         printf("Ошибка: ожидается '{' после условия While\n");
+//         return NULL;
+//     }
+//     //pBuf++;
+//
+//      if (BUF_V != SCOBKA) {
+//         printf("Ошибка: ожидается '(' после блока While\n");
+//     }
+//     pBuf++;
+//
+//     Node* condition = GetA(tokens);
+//
+//     if (BUF_V != SCOBKA) {
+//         printf("Ошибка: ожидается ')' после блока While\n");
+//     }
+//     pBuf++;
+//
+//     whileNode->left = condition;
+//     whileNode->right = uslovie;
+//
+//     return whileNode;
+// }
 
 Node* GetWhile(Node* tokens) {
     fprintf(LOG_FILE, "я нахожусь в GetWhile, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
@@ -203,31 +231,24 @@ Node* GetId(Node* tokens)
 Node* GetA(Node* tokens)
 {
     int old_p = pBuf;
-    Node* node = GetId(tokens);
-    if (node == NULL)
+    Node* node = GetE(tokens);
+    if ((tokens[pBuf].value  == EQ    ||
+         tokens[pBuf].value  == MORE  ||
+         tokens[pBuf].value  == LESS) &&
+         tokens[pBuf].type   == OPERAT)
     {
-        node = GetE(tokens);
-    }
-    else if (tokens[pBuf].value != EQ && tokens[pBuf].value != MORE && tokens[pBuf].value != LESS)
-    {
-        pBuf = old_p;
-        node = GetE(tokens);
-    }
-    else {
-        Node* main;
-        if ((tokens[pBuf].value == EQ   ||
-            tokens[pBuf].value == MORE  ||
-            tokens[pBuf].value == LESS) &&
-            tokens[pBuf].type == OPERAT)
-        {
-            main = &tokens[pBuf];
-            pBuf++;
-        }
+        Node* main = &tokens[pBuf];
+        pBuf++;
+
         Node* node2 = GetE(tokens);
         Node* nodeL = node;
         node = main;
-        node->left = nodeL;
-        node->right = node2;
+        node->left = node2;
+        node->right = nodeL;
+    }
+    else {
+        pBuf = old_p;
+        node = GetE(tokens);
     }
     return node;
 }
@@ -306,19 +327,15 @@ Node* GetN(Node* tokens)
     return &tokens[pBuf++];
 }
 
-#define SET_OPERATOR(op, OP, ...)                           \
-    if (BUF_V == EQ) printf("ADFGBNKEPODVS\n"); \
-    if (pBuf < NO_OP && SIN <= BUF_V && BUF_V <= EQ && OP == BUF_V) \
-    {                                                       \
-        return &tokens[pBuf++];                                        \
-    }
-
-
 Node* GetO(Node* tokens)
 {
-    #include "operation.dsl"
-    #undef SET_OPERATOR
-
+    for (int i = 0; i < arrayVar.size; i++) {
+        if (arrayVar.data[i].type == OPERAT) {
+            if (arrayVar.data[i].value == BUF_V) {
+                return &tokens[pBuf++];
+            }
+        }
+    }
     return &tokens[pBuf++];
 }
 
@@ -332,16 +349,39 @@ int GetNUM()
     return val;
 }
 
-#define SET_OPERATOR(op, OP, ...)                           \
-    if (SIN <= OP && OP <=LESS && strcmp(token, op) == 0)      \
-    {                                                       \
-        return OP;                                          \
+void AddVar(char* name, Node* tokens)
+{
+    int cnt = 0;
+    for (int i = 0; i < arrayVar.size; i++)
+    {
+        if (arrayVar.data[i].type == VAR)
+        {
+            cnt++;
+        }
     }
+    AddNewId(VAR, cnt + 1, name);
+    InitializeNode(&tokens[pBuf], VAR, cnt+1, NULL, NULL, NULL);
+    pBuf++;
+}
+
+void AddVariableVar(Variables* arrayVar, int type, int value, const char* name) {
+    if (arrayVar->size >= arrayVar->capacity) {
+        // Увеличиваем емкость массива, если необходимо
+        arrayVar->capacity *= 2;
+        arrayVar->data = (VariableData*)realloc(arrayVar->data, arrayVar->capacity * sizeof(VariableData));
+    }
+    arrayVar->data[arrayVar->size].type = type;
+    arrayVar->data[arrayVar->size].value = value;
+    arrayVar->data[arrayVar->size].name = strdup(name);
+    arrayVar->size++;
+}
+
 
 #define INIT(type, val) InitializeNode(&tokens[pBuf++], type, val, NULL, NULL, NULL);
 
-int GetOPERAT(Node* tokens)
+void GetOPERAT(Node* tokens)
 {
+    int flagMatch = 0;
     char token[OP_LEN] = "";
     int i = 0;
     while ('a' <= s[p] && s[p] <= 'z') {
@@ -350,12 +390,31 @@ int GetOPERAT(Node* tokens)
         p++;
     }
 
-    #include "operation.dsl"
-    #undef SET_OPERATOR
+    for (int j = 0; j < arrayVar.size; j++) {
+        if (strcmp(token, arrayVar.data[j].name) == 0) {
+            flagMatch++;
+            int val = arrayVar.data[j].value;
+            if (arrayVar.data[j].type == OPERAT) {
+                InitializeNode(&tokens[pBuf++], OPERAT, val, NULL, NULL, NULL);
+            } else if (arrayVar.data[j].type == VAR) {
+                InitializeNode(&tokens[pBuf++], VAR, val, NULL, NULL, NULL);
+            }
+        }
+    }
 
-    int valVAR = AddVariable(&arrayVar, token, 0);
-    InitializeNode(&tokens[pBuf++], VAR, valVAR, NULL, NULL, NULL);
-    return NO_OP;
+    if (flagMatch == 0) {
+        int cnt = 0;
+        while (arrayVar.data[cnt].type == OPERAT) cnt++;
+        int val = arrayVar.size - cnt;
+        AddVariableVar(&arrayVar, VAR, val, token);
+        InitializeNode(&tokens[pBuf++], VAR, val, NULL, NULL, NULL);
+    }
+}
+
+void SkipSpaces()
+{
+    while (s[p] == '\t' || s[p] == '\n' || s[p] == ' ')
+        p++;
 }
 
 void TokenInizial(Node* tokens)
@@ -441,13 +500,9 @@ void TokenInizial(Node* tokens)
             default:
             {
                 if ('a' <= s[p] && s[p] <= 'z') {
-                    int valOP = GetOPERAT(tokens);
-                    if (valOP != NO_OP) {
-                        INIT(OPERAT, valOP);
-                        break;
-                    }
+                    GetOPERAT(tokens);
                 }
-                else p++;
+                else SkipSpaces();
                 break;
             }
         }

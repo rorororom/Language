@@ -1,1 +1,6 @@
-( ( ( ( ( nil 1 nil ) div ( nil x nil ) ) arctan nil ) add ( ( ( nil x nil ) sin nil ) mul ( ( nil x nil ) cos nil ) ) ) div ( ( nil 5 nil ) add ( ( nil 6 nil ) mul ( ( nil x nil ) sin nil ) ) )
+1 = factorial;
+1 = count;
+while (count < 5) {
+    factorial * count = factorial;
+    count + 1 = count;
+}

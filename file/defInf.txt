@@ -1,2 +1,21 @@
-( ( ( ( ( ( nil 15 nil ) mul ( nil x nil ) ) add ( nil 6 nil ) ) sin nil ) pow ( nil 3 nil ) ) add ( ( ( ( nil x nil ) pow ( nil 3 nil ) ) sub ( nil 9 nil ) ) cos nil ) )
-sin(15x + 6)^3 + cos(x^3 - 9)
+push 1
+pop RAX
+push 1
+pop RBX
+:1
+PUSH RAX
+PUSH 14
+JAE :3
+push RBX
+push 5
+JAE :3
+rbx
+RAX
+mul
+pop rax
+push rbx
+push 1
+pop rbx
+:3
+out
+htl

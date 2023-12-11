@@ -24,3 +24,42 @@ Node* GetWhile(Node* tokens);
 Node* GetBody(Node* tokens);
 //void BuildTREEEE(char* filename);
 #endif
+
+// Node* GetWhile(Node* tokens) {
+//     fprintf(LOG_FILE, "я нахожусь в GetWhile, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
+//     Node* whileNode = &tokens[pBuf++];
+//     fprintf(LOG_FILE, "я собираюсь вызвать GetE, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
+//
+//     fprintf(LOG_FILE, "я после вызова GetE, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
+//
+//     if (BUF_V != OPEN_BRACE) {
+//         printf("Ошибка: ожидается '{' после условия While\n");
+//         return NULL;
+//     }
+//     pBuf++;  // Пропустить '{'
+//
+//     Node* uslovie = GetBody(tokens);
+//
+//     if (BUF_V != CLOSE_BRACE) {
+//         printf("Ошибка: ожидается '{' после условия While\n");
+//         return NULL;
+//     }
+//     //pBuf++;
+//
+//      if (BUF_V != SCOBKA) {
+//         printf("Ошибка: ожидается '(' после блока While\n");
+//     }
+//     pBuf++;
+//
+//     Node* condition = GetA(tokens);
+//
+//     if (BUF_V != SCOBKA) {
+//         printf("Ошибка: ожидается ')' после блока While\n");
+//     }
+//     pBuf++;
+//
+//     whileNode->left = condition;
+//     whileNode->right = uslovie;
+//
+//     return whileNode;
+// }

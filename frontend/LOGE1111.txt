@@ -1,6 +1,6 @@
 <hr/>
 <p>Open File</p>
-<meta charset="UTF-8"><p>Time is 2023-12-10 21:42:06</p>
+<meta charset="UTF-8"><p>Time is 2023-12-11 22:26:34</p>
 я нахожусь в GetG, pbuf = 0, token = 7
 я нахожусь в GetWhile, pbuf = 8, token = 7
 я собираюсь вызвать GetE, pbuf = 9, token = 7

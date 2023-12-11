@@ -282,7 +282,9 @@ static void PrintNodeDump(FILE* dotFile, Node* node, Variables* arrayVar, const 
                           node, fillColor, operation);
     }
     else if(node->type == VAR) {
-        char* value = strdup(arrayVar->data[int(node->value)].name);
+        int cnt = 0;
+        while (arrayVar->data[cnt].type != VAR) cnt++;
+        char* value = strdup(arrayVar->data[cnt + node->value].name);
         fprintf(dotFile, "%d [shape=record, style=\"filled,rounded\", color=\"#FF0000\",\
                           fillcolor=\"%s\", fontsize=14, label=\" %s \"];\n",
                           node, fillColor, value);
