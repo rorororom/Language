@@ -20,7 +20,7 @@ Node* GetA(Node* tokens);
 Node* GetW(Node* tokens);
 Node* GetO(Node* tokens);
 Node* GetIf(Node* tokens);
-Node* GetWhile(Node* tokens);
+Node* GetOp(Node* tokens);
 Node* GetBody(Node* tokens);
 //void BuildTREEEE(char* filename);
 #endif

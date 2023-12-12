@@ -3,16 +3,6 @@
 #include "../common/log_funcs.h"
 #include "../common/write_in_file.h"
 
-void TransformAndEvaluate(Differ* differ)
-{
-    int changeCount = 0;
-    do {
-        changeCount = 0;
-        TransformationNode(&differ->tree->rootTree, &changeCount, differ->variables, differ->tree);
-        GenerateImage(differ);
-    } while (changeCount > 0);
-}
-
 void FuncFromFile(char* filename)
 {
     OpenLogFile("LOGE1111.txt", "w");
@@ -25,9 +15,6 @@ void FuncFromFile(char* filename)
     CtorRootAndVariebles(&differ_before);
 
     BuildTREEEE("../file/defInf4.txt", &differ_before);
-
-    printf("%d\n", differ_before.tree->rootTree->left->value);
-    printf("%d\n", differ_before.tree->rootTree->left->type);
 
 //     int result = 0;
 //     differ_before.variables->data[0].value = 0;
@@ -46,10 +33,7 @@ void FuncFromFile(char* filename)
 //
 //     differ_after.tree->rootTree = Dif(differ_before.tree->rootTree);
     SetParentPointers(differ_before.tree->rootTree, NULL);
-    TransformAndEvaluate(&differ_before);
     PrintTreeToFileWithoutBrackets("../file/code2.txt", differ_before.tree->rootTree, differ_before.variables);
-    printf("%d\n", differ_before.tree->rootTree->left->value);
-    printf("%d\n", differ_before.tree->rootTree->left->type);
 //     GenerateImage(&differ_after);
 //     differ_after.tree->rootTree->parent = NULL;
 //
@@ -62,5 +46,19 @@ void FuncFromFile(char* filename)
 
 int main()
 {
-    FuncFromFile("./file/defInf4.txt");
+    OpenLogFile("LOGE1111.txt", "w");
+    Differ differ_before = {};
+    Tree tree = {};
+    Variables array = {};
+    differ_before.tree = &tree;
+    differ_before.variables = &array;
+
+    CtorRootAndVariebles(&differ_before);
+
+    BuildTREEEE("../file/defInf4.txt", &differ_before);
+
+    SetParentPointers(differ_before.tree->rootTree, NULL);
+    PrintTreeToFileWithoutBrackets("../file/code2.txt", differ_before.tree->rootTree, differ_before.variables);
+
+    //TreeAndVarieblesDtor(&differ_before);
 }

@@ -1,7 +1,8 @@
+count = 5 ;
 if ( count @ 5 )
 { factorial = factorial * count ;
-count = 5 ;
-coutn = 20 ;
+count = count + 1 * 5 ;
+coutn = count + 20 ;
 while ( count @ 6 )
 { count = count * 5 ;
 }

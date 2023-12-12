@@ -41,14 +41,14 @@ void CreatId()
     AddNewId(OPERAT, ARCCOS, "arccos");
     AddNewId(OPERAT, ARCCOT, "arctg");
     AddNewId(OPERAT, ARCTAN, "arcctg");
-    AddNewId(OPERAT, IF, "if");
+    AddNewId(OPERAT, IF, "whisper");
     AddNewId(OPERAT, WHILE, "spell");
     AddNewId(OPERAT, EQ, "with");
     AddNewId(OPERAT, MUL, "energy");
-    AddNewId(OPERAT, ADD, "weave");
-    AddNewId(OPERAT, POW, "whirl");
-    AddNewId(OPERAT, SUB, "harmonize");
-    AddNewId(OPERAT, DIV, "dissolve");
+    AddNewId(OPERAT, ADD, "harmony");
+    AddNewId(OPERAT, POW, "empower");
+    AddNewId(OPERAT, SUB, "separate");
+    AddNewId(OPERAT, DIV, "balance");
 }
 
 int BuildTREEEE(char* filename, Differ* differ_before)
@@ -141,7 +141,7 @@ Node* GetBody(Node* tokens)
 
     while (BUF_V != CLOSE_BRACE && BUF_V != END) {
         if (BUF_V == WHILE || BUF_V == IF) {
-            Node* nestedWhile = GetWhile(tokens);
+            Node* nestedWhile = GetOp(tokens);
             currentNode->left = nestedWhile;
         // } else if (BUF_V == IF) {
         //     Node* nestedIf = GetIf(tokens);
@@ -202,7 +202,7 @@ Node* GetBody(Node* tokens)
 //     return whileNode;
 // }
 
-Node* GetWhile(Node* tokens) {
+Node* GetOp(Node* tokens) {
     fprintf(LOG_FILE, "я нахожусь в GetWhile, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
     printf("tokens[] = %d\n", tokens[pBuf].value);
     Node* whileNode = &tokens[pBuf++];

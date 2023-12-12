@@ -1,8 +1,19 @@
 '=' with
 '*' energy
-'+' weave
-'^' whirl
-'-' harmonize
-'/' dissolve
+'+' harmony
+'^' empower
+'-' separate
+'/' balance
 'while' spell
 'if' whisper
+
+'1' Bloom
+'2' Stella
+'3' Muza
+'4' Layla
+'5' Tecna
+'6' Flora
+'7' Faragonda
+'8' Darcy
+'9' Riven
+'0' Brendon

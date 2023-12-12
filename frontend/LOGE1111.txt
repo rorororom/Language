@@ -1,18 +1,14 @@
 <hr/>
 <p>Open File</p>
-<meta charset="UTF-8"><p>Time is 2023-12-13 01:37:47</p>
+<meta charset="UTF-8"><p>Time is 2023-12-13 02:24:41</p>
 я нахожусь в GetG, pbuf = 0, token = 7
-я нахожусь в GetWhile, pbuf = 0, token = 7
-я собираюсь вызвать GetE, pbuf = 1, token = 7
-я после вызова GetE, pbuf = 6, token = 7
-я нахожусь в GetWhile, pbuf = 27, token = 7
-я собираюсь вызвать GetE, pbuf = 28, token = 7
-я после вызова GetE, pbuf = 33, token = 7
+я нахожусь в GetWhile, pbuf = 4, token = 7
+я собираюсь вызвать GetE, pbuf = 5, token = 7
+я после вызова GetE, pbuf = 10, token = 7
+я нахожусь в GetWhile, pbuf = 31, token = 7
+я собираюсь вызвать GetE, pbuf = 32, token = 7
+я после вызова GetE, pbuf = 37, token = 7
 <div style="display: block; margin-bottom: 20px;"><img src="/Users/aleksandr/Desktop/language/grapth/grath_0000.png" alt="Graph Image"></div>
-<div style="display: block; margin-bottom: 20px;"><img src="/Users/aleksandr/Desktop/language/grapth/grath_0001.png" alt="Graph Image"></div>
-<div style="display: block; margin-bottom: 20px;"><img src="/Users/aleksandr/Desktop/language/grapth/grath_0002.png" alt="Graph Image"></div>
-<div style="display: block; margin-bottom: 20px;"><img src="/Users/aleksandr/Desktop/language/grapth/grath_0003.png" alt="Graph Image"></div>
-<div style="display: block; margin-bottom: 20px;"><img src="/Users/aleksandr/Desktop/language/grapth/grath_0004.png" alt="Graph Image"></div>
 
 <p>Close File</p>
 <hr/>

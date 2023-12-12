@@ -1,7 +1,8 @@
-if (5 < count) {
+5 with count;
+whisper (5 < count) {
     factorial energy count with factorial;
-    count weave 1 energy 5 with count;
-    count weave 20 with coutn;
+    count harmony 1 energy 5 with count;
+    count harmony 20 with coutn;
     spell (6 < count) {
         count energy 5 with count;
     }
