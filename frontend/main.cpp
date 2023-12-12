@@ -44,7 +44,7 @@ void FuncFromFile(char* filename)
 //     differ_after.tree->rootTree = Dif(differ_before.tree->rootTree);
     SetParentPointers(differ_before.tree->rootTree, NULL);
     TransformAndEvaluate(&differ_before);
-    PrintTreeToFileWithoutBrackets(differ_before.tree->rootTree, differ_before.variables);
+    PrintTreeToFileWithoutBrackets("../file/code2.txt", differ_before.tree->rootTree, differ_before.variables);
 //     GenerateImage(&differ_after);
 //     differ_after.tree->rootTree->parent = NULL;
 //

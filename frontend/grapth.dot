@@ -60,7 +60,7 @@ digraph tree {
 	100528 -> 100488;
 100488 [shape=record, style="filled,rounded", color="#FF0000",                          fillcolor="#6495ed", fontsize=14, label=" count "];
 	100528 -> 100568;
-100568 [shape=record, style="filled,rounded", color="#552d7b",                          fillcolor="#bba6cd", fontsize=14, label=" 10 "];
+100568 [shape=record, style="filled,rounded", color="#552d7b",                          fillcolor="#bba6cd", fontsize=14, label=" 20 "];
 	1680 -> 1936;
 1936 [shape=record, style="filled,rounded", color=" #0000ff ",                          fillcolor="#bba6cd", fontsize=14, label=" ; "];
 	1936 -> 100808;

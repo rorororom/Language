@@ -3,7 +3,7 @@
 while (5 < count) {
     factorial * count = factorial;
     count + 1 = count;
-    count + 10 = coutn;
+    count + 20 = coutn;
 }
 5 = count;
 

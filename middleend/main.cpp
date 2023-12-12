@@ -32,5 +32,5 @@ int main()
     GenerateImage(&differ_before);
     SetParentPointers(differ_before.tree->rootTree, NULL);
     TransformAndEvaluate(&differ_before);
-    PrintTreeToFileWithoutBrackets(differ_before.tree->rootTree, differ_before.variables);
+    PrintTreeToFileWithoutBrackets("../file/code3.txt", differ_before.tree->rootTree, differ_before.variables);
 }

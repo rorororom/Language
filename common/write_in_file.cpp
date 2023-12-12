@@ -4,17 +4,13 @@
 #include <assert.h>
 
 #include "differentiation.h"
+#include "write_in_file.h"
 
-void PrintNode(Node* node, FILE* file, Variables* arrayVar);
-void PrintIntNode(Node* node, FILE* file, Variables* arrayVar);
-void PrintParentNorNull(Node* node, FILE* file, Variables* arrayVar);
-void PrintParentNull(Node* node, FILE* file, Variables* arrayVar);
-
-void PrintTreeToFileWithoutBrackets(Node* node, Variables* arrayVar)
+void PrintTreeToFileWithoutBrackets(char* filename, Node* node, Variables* arrayVar)
 {
     assert(node);
 
-    FILE* file = fopen("../file/code2.txt", "w");
+    FILE* file = fopen(filename, "w");
     if (file == NULL)
     {
         printf("Ошибка при открытии файла.\n");

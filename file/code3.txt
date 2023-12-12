@@ -1,8 +1,8 @@
-factorial = 24 ;
+factorial = 3 ;
 count = 1 ;
 while ( count @ 5 )
 { factorial = factorial * count ;
 count = count + 1 ;
-count = count + 15 ;
+coutn = count + 20 ;
 }
 count = 5 ;
