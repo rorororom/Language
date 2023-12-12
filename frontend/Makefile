@@ -1,5 +1,4 @@
 CXX = g++-13
-EXECUTABLE = main
 CXXFLAGS =  -D _DEBUG -ggdb3 -std=c++17 -O0 -Wall -Wextra -Weffc++ -Waggressive-loop-optimizations \
 			-Wc++14-compat -Wmissing-declarations -Wcast-align -Wcast-qual -Wchar-subscripts       \
 			-Wconditionally-supported -Wconversion -Wctor-dtor-privacy -Wempty-body -Wfloat-equal  \
@@ -13,12 +12,13 @@ CXXFLAGS =  -D _DEBUG -ggdb3 -std=c++17 -O0 -Wall -Wextra -Weffc++ -Waggressive-
 			-Wno-old-style-cast -Wno-varargs -Wstack-protector -fcheck-new -fsized-deallocation    \
 			-fstack-protector -fstrict-overflow -fno-omit-frame-pointer -Wlarger-than=8192         \
 			-Wstack-usage=8192 -fsanitize=address,leak,undefined -fPIE -Werror=vla
-
-SOURCES = main.cpp recurs.cpp read_from_file_in_buffer.cpp differentiation.cpp print_tree.cpp log_funcs.cpp write_in_file.cpp
-OBJECTS = $(SOURCES:%.cpp=%.o)
-EXECUTABLE = differentiation.out
-
+COMMON_DIR = ../common
+SOURCES = main.cpp recurs.cpp
+OUT_SOURCES = log_funcs.cpp read_from_file_in_buffer.cpp write_in_file.cpp print_tree.cpp differentiation.cpp
+OBJECTS = $(SOURCES:%.cpp=$(OBJ_DIR)/%.o)
+OUT_OBJECTS = $(OUT_SOURCES:%.cpp=$(OBJ_DIR)/%.o)
 OBJ_DIR = obj
+EXECUTABLE = frontend.out
 
 OBJECTS = $(addprefix $(OBJ_DIR)/, $(SOURCES:%.cpp=%.o))
 
@@ -26,18 +26,19 @@ OBJECTS = $(addprefix $(OBJ_DIR)/, $(SOURCES:%.cpp=%.o))
 
 all: $(EXECUTABLE)
 
-$(EXECUTABLE): $(OBJECTS)
+$(EXECUTABLE): $(OBJECTS) $(OUT_OBJECTS)
 	$(CXX) $^ -o $@ $(CXXFLAGS)
 
 $(OBJ_DIR)/%.o: %.cpp
+	@mkdir -p $(@D)
 	$(CXX) -c $< -o $@ $(CXXFLAGS)
 
-run:
+$(OBJ_DIR)/%.o: $(COMMON_DIR)/%.cpp
+	@mkdir -p $(@D)
+	$(CXX) -c $< -o $@ $(CXXFLAGS)
+
+run: $(EXECUTABLE)
 	./$(EXECUTABLE)
 
-run_and_gen_image:
-	./$(EXECUTABLE) -I/path/to/gnuplot -L/path/to/gnuplot/lib -lgnuplot
-	dot -Tpng /Users/aleksandr/Desktop/akinator/graph.dot -o file.png
-
 clean:
-	rm -f $(EXECUTABLE) $(OBJECTS)
+	rm -rf $(OBJ_DIR) $(EXECUTABLE)

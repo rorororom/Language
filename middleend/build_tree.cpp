@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "../frontend/differentiation.h"
-#include "../frontend/log_funcs.h"
+#include "../common/differentiation.h"
+#include "../common/log_funcs.h"
 #include "build_tree.h"
 
 
@@ -46,7 +46,7 @@ void CreatId()
 
 int BuildTreeMiddleEnd(char* filename, Differ* differ_before) {
     FILE* file = fopen(filename, "r");
-    if (file == nullptr) {
+    if (file == NULL) {
         printf("Ошибка при открытии файла.\n");
     }
 

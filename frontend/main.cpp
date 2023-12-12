@@ -1,7 +1,7 @@
-#include "differentiation.h"
+#include "../common/differentiation.h"
 #include "recurs.h"
-#include "log_funcs.h"
-#include "write_in_file.h"
+#include "../common/log_funcs.h"
+#include "../common/write_in_file.h"
 
 void TransformAndEvaluate(Differ* differ)
 {

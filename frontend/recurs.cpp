@@ -3,10 +3,10 @@
 #include <string.h>
 
 #include "recurs.h"
-#include "read_from_file_in_buffer.h"
-#include "differentiation.h"
-#include "print_tree.h"
-#include "log_funcs.h"
+#include "../common/read_from_file_in_buffer.h"
+#include "../common/differentiation.h"
+#include "../common/print_tree.h"
+#include "../common/log_funcs.h"
 
 #define BUF_V tokens[pBuf].value
 #define BUF_T tokens[pBuf].type

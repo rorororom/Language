@@ -1,7 +1,7 @@
 #ifndef RECURS
 #define RECURS
 
-#include "differentiation.h"
+#include "../common/differentiation.h"
 
 const int OP_LEN = 10;
 const int NO_OP = -9999;

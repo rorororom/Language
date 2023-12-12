@@ -1,16 +1,11 @@
 #include <stdlib.h>
 
-#include "../frontend/differentiation.h"
-#include "../frontend/print_tree.h"
-#include "../frontend/log_funcs.h"
+#include "../common/differentiation.h"
+#include "../common/print_tree.h"
+#include "../common/log_funcs.h"
+#include "../common/write_in_file.h"
 
 #include "build_tree.h"
-
-char* s = NULL;
-int p = 0;
-Variables arrayVar;
-int size = 0;
-int pBuf = 0;
 
 void TransformAndEvaluate(Differ* differ)
 {
@@ -33,8 +28,9 @@ int main()
     differ_before.variables = &array;
 
     CtorRootAndVariebles(&differ_before);
-    BuildTreeMiddleEnd("../file/defInf4.txt", &differ_before);
+    BuildTreeMiddleEnd("../file/code2.txt", &differ_before);
+    GenerateImage(&differ_before);
     SetParentPointers(differ_before.tree->rootTree, NULL);
     TransformAndEvaluate(&differ_before);
-    //PrintTreeToFileWithoutBrackets(differ_before.tree->rootTree, differ_before.variables);
+    PrintTreeToFileWithoutBrackets(differ_before.tree->rootTree, differ_before.variables);
 }
