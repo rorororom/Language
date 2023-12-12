@@ -1,6 +1,17 @@
 #include "differentiation.h"
 #include "recurs.h"
 #include "log_funcs.h"
+#include "write_in_file.h"
+
+void TransformAndEvaluate(Differ* differ)
+{
+    int changeCount = 0;
+    do {
+        changeCount = 0;
+        TransformationNode(&differ->tree->rootTree, &changeCount, differ->variables, differ->tree);
+        GenerateImage(differ);
+    } while (changeCount > 0);
+}
 
 void FuncFromFile(char* filename)
 {
@@ -31,7 +42,9 @@ void FuncFromFile(char* filename)
 //     differ_after.variables = differ_before.variables;
 //
 //     differ_after.tree->rootTree = Dif(differ_before.tree->rootTree);
-//     SetParentPointers(differ_after.tree->rootTree, NULL);
+    SetParentPointers(differ_before.tree->rootTree, NULL);
+    TransformAndEvaluate(&differ_before);
+    PrintTreeToFileWithoutBrackets(differ_before.tree->rootTree, differ_before.variables);
 //     GenerateImage(&differ_after);
 //     differ_after.tree->rootTree->parent = NULL;
 //

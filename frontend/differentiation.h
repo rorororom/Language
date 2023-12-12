@@ -97,7 +97,7 @@ Node* NewNode(int type, double value, Node* left, Node* right);
 void SetParentPointers(Node* node, Node* parent);
 Node* Copy(Node* nowNode);
 Node* Dif(Node* nowNode);
-void TransformationNode(Node** nowNode, int* changeCount, Variables* arrayVar, Tree* treeDif, Lines* text);
+void TransformationNode(Node** nowNode, int* changeCount, Variables* arrayVar, Tree* treeDif);
 
 int GetVariableIdByName(Variables* arrayVar, const char* variableName);
 int AddVariable(Variables* arrayVar, const char*  variableName, const int variableValue);

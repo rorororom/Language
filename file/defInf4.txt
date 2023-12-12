@@ -1,6 +1,8 @@
 3 = factorial;
-1 = count;
+1 ^ 2 = count;
 while (5 < count) {
     factorial * count = factorial;
     count + 1 = count;
 }
+5 = count;
+
