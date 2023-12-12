@@ -42,7 +42,13 @@ void CreatId()
     AddNewId(OPERAT, ARCCOT, "arctg");
     AddNewId(OPERAT, ARCTAN, "arcctg");
     AddNewId(OPERAT, IF, "if");
-    AddNewId(OPERAT, WHILE, "while");
+    AddNewId(OPERAT, WHILE, "spell");
+    AddNewId(OPERAT, EQ, "with");
+    AddNewId(OPERAT, MUL, "energy");
+    AddNewId(OPERAT, ADD, "weave");
+    AddNewId(OPERAT, POW, "whirl");
+    AddNewId(OPERAT, SUB, "harmonize");
+    AddNewId(OPERAT, DIV, "dissolve");
 }
 
 int BuildTREEEE(char* filename, Differ* differ_before)
@@ -94,27 +100,36 @@ Node* GetG(Node* tokens) {
 }
 
 Node* GetIf(Node* tokens) {
-    Node* ifNode = &tokens[pBuf++];
+    fprintf(LOG_FILE, "я нахожусь в GetWhile, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
+    printf("tokens[] = %d\n", tokens[pBuf].value);
+    Node* whileNode = &tokens[pBuf++];
+    fprintf(LOG_FILE, "я собираюсь вызвать GetE, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
+
     if (BUF_V != SCOBKA) {
-        printf("Ошибка: ожидается '}' после блока While\n");
+        printf("Ошибка: ожидается '(' после блока While\n");
     }
     pBuf++;
+
     Node* condition = GetA(tokens);
+
     if (BUF_V != SCOBKA) {
-        printf("Ошибка: ожидается '}' после блока While\n");
+        printf("Ошибка: ожидается ')' после блока While\n");
     }
     pBuf++;
+
+    fprintf(LOG_FILE, "я после вызова GetE, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
+
     if (BUF_V != OPEN_BRACE) {
-        printf("Ошибка: ожидается '{' после условия IF\n");
+        printf("Ошибка: ожидается '{' после условия While\n");
         return NULL;
     }
 
     pBuf++;  // Пропустить '{'
 
-    ifNode->left = condition;
-    ifNode->right = GetBody(tokens);
+    whileNode->left = condition;
+    whileNode->right = GetBody(tokens);
 
-    return ifNode;
+    return whileNode;
 }
 
 Node* GetBody(Node* tokens)
@@ -125,12 +140,12 @@ Node* GetBody(Node* tokens)
     Node* currentNode = whileBodyNode;
 
     while (BUF_V != CLOSE_BRACE && BUF_V != END) {
-        if (BUF_V == WHILE) {
+        if (BUF_V == WHILE || BUF_V == IF) {
             Node* nestedWhile = GetWhile(tokens);
             currentNode->left = nestedWhile;
-        } else if (BUF_V == IF) {
-            Node* nestedIf = GetIf(tokens);
-            currentNode->left = nestedIf;
+        // } else if (BUF_V == IF) {
+        //     Node* nestedIf = GetIf(tokens);
+        //     currentNode->left = nestedIf;
         } else {
             Node* statement = GetA(tokens);
             currentNode->left = statement;
@@ -189,6 +204,7 @@ Node* GetBody(Node* tokens)
 
 Node* GetWhile(Node* tokens) {
     fprintf(LOG_FILE, "я нахожусь в GetWhile, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
+    printf("tokens[] = %d\n", tokens[pBuf].value);
     Node* whileNode = &tokens[pBuf++];
     fprintf(LOG_FILE, "я собираюсь вызвать GetE, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
 
@@ -461,10 +477,6 @@ void TokenInizial(Node* tokens)
                 num = GetNUM();
                 INIT(INT, num);
                 break;
-            case '+':
-                INIT(OPERAT, ADD);
-                p++;
-                break;
             case '>':
                 INIT(OPERAT, MORE);
                 p++;
@@ -473,28 +485,8 @@ void TokenInizial(Node* tokens)
                 INIT(OPERAT, LESS);
                 p++;
                 break;
-            case '-':
-                INIT(OPERAT, SUB);
-                p++;
-                break;
             case ';':
                 INIT(OPERAT, SEMICOLON);
-                p++;
-                break;
-            case '*':
-                INIT(OPERAT, MUL);
-                p++;
-                break;
-            case '^':
-                INIT(OPERAT, POW);
-                p++;
-                break;
-            case '/':
-                INIT(OPERAT, DIV);
-                p++;
-                break;
-            case '=':
-                INIT(OPERAT, EQ);
                 p++;
                 break;
             default:

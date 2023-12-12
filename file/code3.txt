@@ -1,8 +1,9 @@
-factorial = 3 ;
-count = 1 ;
-while ( count @ 5 )
+if ( count @ 5 )
 { factorial = factorial * count ;
-count = count + 1 ;
-coutn = count + 20 ;
-}
 count = 5 ;
+coutn = 20 ;
+while ( count @ 6 )
+{ count = count * 5 ;
+}
+}
+count = 500 ;

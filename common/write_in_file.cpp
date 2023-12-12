@@ -80,7 +80,7 @@ void PrintParentNorNull(Node* node, FILE* file, Variables* arrayVar)
         PrintNode(node->left, file, arrayVar);
         fprintf(file, ") ");
     }
-    if (node->value == WHILE)
+    if (node->value == WHILE || node->value == IF)
     {
         char* operation = IssuesOperation(node);
         fprintf(file, "%s( ", operation);
@@ -126,7 +126,7 @@ void PrintParentNull(Node* node, FILE* file, Variables* arrayVar)
         PrintNode(node->left, file, arrayVar);
         fprintf(file, ") ");
     }
-    if (node->value == WHILE)
+    if (node->value == WHILE || node->value == IF)
     {
         char* operation = IssuesOperation(node);
         fprintf(file, "%s ( ", operation);

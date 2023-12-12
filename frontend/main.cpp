@@ -26,6 +26,9 @@ void FuncFromFile(char* filename)
 
     BuildTREEEE("../file/defInf4.txt", &differ_before);
 
+    printf("%d\n", differ_before.tree->rootTree->left->value);
+    printf("%d\n", differ_before.tree->rootTree->left->type);
+
 //     int result = 0;
 //     differ_before.variables->data[0].value = 0;
 //     result = EvaluateExpression(differ_before.tree->rootTree, differ_before.variables);
@@ -45,6 +48,8 @@ void FuncFromFile(char* filename)
     SetParentPointers(differ_before.tree->rootTree, NULL);
     TransformAndEvaluate(&differ_before);
     PrintTreeToFileWithoutBrackets("../file/code2.txt", differ_before.tree->rootTree, differ_before.variables);
+    printf("%d\n", differ_before.tree->rootTree->left->value);
+    printf("%d\n", differ_before.tree->rootTree->left->type);
 //     GenerateImage(&differ_after);
 //     differ_after.tree->rootTree->parent = NULL;
 //

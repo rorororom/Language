@@ -1,9 +1,12 @@
-3 = factorial;
-1 ^ 2 = count;
-while (5 < count) {
-    factorial * count = factorial;
-    count + 1 = count;
-    count + 20 = coutn;
+if (5 < count) {
+    factorial energy count with factorial;
+    count weave 1 energy 5 with count;
+    count weave 20 with coutn;
+    spell (6 < count) {
+        count energy 5 with count;
+    }
 }
-5 = count;
+500 with count;
+
+
 
