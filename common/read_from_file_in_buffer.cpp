@@ -101,15 +101,3 @@ void ProcessFile(struct Buffer* array, struct Lines* lines)
     FillTextAndCountLine(array, lines);
 
 }
-
-void WordCount(struct Compiler *source)
-{
-    assert(source != NULL);
-    assert(source->buffer != NULL);
-
-    for (int i = 0; i < source->size; i++) {
-        if (source->buffer[i] == '\n' || source->buffer[i] == ' ') {
-            source->words++;
-        }
-    }
-}

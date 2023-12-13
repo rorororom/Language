@@ -96,7 +96,7 @@ DEF_CMD(IN,     9, 0,
         printf("Введите число\n");
         scanf("%d", &value);
         StackPush(&source->myStack, value);
-        Elem_t topValue = StackTop(&source->myStack);
+        int topValue = StackTop(&source->myStack);
         printf("cc= Top value on the stack: %d\n", topValue);
     })
 DEF_CMD(OUT,   10, 0,

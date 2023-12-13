@@ -2,6 +2,7 @@
 #define COMPILER_H
 
 #include "../common/const.h"
+#include "../common/differentiation.h"
 
 const int INITIAL_CAPACITY = 1;
 

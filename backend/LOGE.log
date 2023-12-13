@@ -1,63 +1,65 @@
 <hr/>
 <p>Open File</p>
-<meta charset="UTF-8"><p>Time is 2023-12-13 13:43:46</p>
+<meta charset="UTF-8"><p>Time is 2023-12-13 21:52:19</p>
 0 = PUSH and 4
-1 = 5 and 1
+1 = 1 and 1
 2 = POP and 3
 3 = RAX and 3
-4 = :3 and 2
+4 = :1 and 2
 5 = PUSH and 4
-6 = RAX and 3
+6 = 6 and 1
 7 = PUSH and 4
-8 = 14 and 2
-9 = JAE and 3
-10 = :3 and 2
+8 = RAX and 3
+9 = JB and 2
+10 = :2 and 2
 11 = PUSH and 4
 12 = RAX and 3
 13 = PUSH and 4
 14 = RAX and 3
 15 = MUL and 3
-16 = PRINT and 5
-17 = PUSH and 4
-18 = RAX and 3
-19 = PUSH and 4
-20 = 1 and 1
-21 = ADD and 3
-22 = POP and 3
-23 = RAX and 3
-24 = JMP and 3
-25 = :3 and 2
-26 = :3 and 2
-27 = OUT and 3
-28 = HLT and 3
+16 = POP and 3
+17 = RAX and 3
+18 = PUSH and 4
+19 = RAX and 3
+20 = PUSH and 4
+21 = 1 and 1
+22 = ADD and 3
+23 = POP and 3
+24 = RAX and 3
+25 = JMP and 3
+26 = :1 and 2
+27 = :2 and 2
+28 = OUT and 3
+29 = HLT and 3
 МАССИВ КОМАНД
 0 - 1
-1 - 5
+1 - 1
 2 - 43
 3 - 1
-4 - 33
-5 - 1
-6 - 1
-7 - 14
-8 - 24
-9 - 4
+4 - 1
+5 - 6
+6 - 33
+7 - 1
+8 - 25
+9 - 26
 10 - 33
 11 - 1
 12 - 33
 13 - 1
 14 - 4
-15 - 31
-16 - 33
-17 - 1
+15 - 43
+16 - 1
+17 - 33
 18 - 1
 19 - 1
-20 - 3
-21 - 43
-22 - 1
-23 - 22
-24 - 4
-25 - 10
-26 - -1
+20 - 1
+21 - 3
+22 - 43
+23 - 1
+24 - 22
+25 - 4
+26 - 10
+27 - -1
 
 <p>Close File</p>
 <hr/>

@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include <assert.h>
 
 #include "../common/log_funcs.h"
 #include "../common/const.h"
@@ -14,7 +15,7 @@ int main ()
     OpenLogFile ("LOGE.log", "w");
 
     struct Compiler source = {
-        "../assets/commands.txt",
+        "../file/defInf.txt",
         NULL,
         NULL,
         NULL,
@@ -44,6 +45,7 @@ int main ()
 
     BinaryRecordind (&source);
 
-    fclose (outputfile);
+//     fclose (outputfile);
     return 0;
 }
+

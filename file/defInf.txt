@@ -1,21 +1,18 @@
-push 1
-pop RAX
-push 1
-pop RBX
+PUSH 1
+POP RAX
 :1
+PUSH 6
 PUSH RAX
-PUSH 14
-JAE :3
-push RBX
-push 5
-JAE :3
-rbx
-RAX
-mul
-pop rax
-push rbx
-push 1
-pop rbx
-:3
-out
-htl
+JB :2
+PUSH RAX
+PUSH RAX
+MUL
+POP RAX
+PUSH RAX
+PUSH 1
+ADD
+POP RAX
+JMP :1
+:2
+OUT
+HLT
