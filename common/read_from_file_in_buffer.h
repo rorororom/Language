@@ -16,6 +16,7 @@ struct Lines {
 void GetFileSize (FILE* file, struct Buffer* array);
 void ReadFileInBuffer (FILE *fp, struct Buffer* array);
 void FillText (struct Buffer* array);
+void WordCount(struct Compiler *source);
 
 void ProcessFile(struct Buffer* array, struct Lines* lines);
 void FillTextAndCountLine (struct Buffer* array, struct Lines* lines);

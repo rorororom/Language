@@ -401,8 +401,11 @@ double EvaluateExpression(Node* node, Variables* arrayVar)
         leftValue = EvaluateExpression(node->left, arrayVar);
     }
     else {
+        printf("AAAA\n");
         leftValue = EvaluateExpression(node->left, arrayVar);
+        printf("%lg\n", leftValue);
         rightValue = EvaluateExpression(node->right, arrayVar);
+        printf("%lg\n", rightValue);
     }
 
     switch (int(node->value)) {

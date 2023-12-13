@@ -49,6 +49,9 @@ void CreatId()
     AddNewId(OPERAT, POW, "empower");
     AddNewId(OPERAT, SUB, "separate");
     AddNewId(OPERAT, DIV, "balance");
+    AddNewId(OPERAT, CLOSE_BRACE, "blinksi");
+    AddNewId(OPERAT, BRACKET, "glinksi");
+    AddNewId(OPERAT, SEMICOLON, "winx");
 }
 
 int BuildTREEEE(char* filename, Differ* differ_before)
@@ -99,39 +102,6 @@ Node* GetG(Node* tokens) {
     return node;
 }
 
-Node* GetIf(Node* tokens) {
-    fprintf(LOG_FILE, "я нахожусь в GetWhile, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
-    printf("tokens[] = %d\n", tokens[pBuf].value);
-    Node* whileNode = &tokens[pBuf++];
-    fprintf(LOG_FILE, "я собираюсь вызвать GetE, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
-
-    if (BUF_V != SCOBKA) {
-        printf("Ошибка: ожидается '(' после блока While\n");
-    }
-    pBuf++;
-
-    Node* condition = GetA(tokens);
-
-    if (BUF_V != SCOBKA) {
-        printf("Ошибка: ожидается ')' после блока While\n");
-    }
-    pBuf++;
-
-    fprintf(LOG_FILE, "я после вызова GetE, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
-
-    if (BUF_V != OPEN_BRACE) {
-        printf("Ошибка: ожидается '{' после условия While\n");
-        return NULL;
-    }
-
-    pBuf++;  // Пропустить '{'
-
-    whileNode->left = condition;
-    whileNode->right = GetBody(tokens);
-
-    return whileNode;
-}
-
 Node* GetBody(Node* tokens)
 {
     CREAT_NODE(whileBodyNode);
@@ -160,74 +130,27 @@ Node* GetBody(Node* tokens)
             currentNode = nextStatement;
         }
     }
+
     return whileBodyNode;
 }
 
-// Node* GetWhile(Node* tokens) {
-//     fprintf(LOG_FILE, "я нахожусь в GetWhile, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
-//     Node* whileNode = &tokens[pBuf++];
-//     fprintf(LOG_FILE, "я собираюсь вызвать GetE, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
-//
-//     fprintf(LOG_FILE, "я после вызова GetE, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
-//
-//     if (BUF_V != OPEN_BRACE) {
-//         printf("Ошибка: ожидается '{' после условия While\n");
-//         return NULL;
-//     }
-//     pBuf++;  // Пропустить '{'
-//
-//     Node* uslovie = GetBody(tokens);
-//
-//     if (BUF_V != CLOSE_BRACE) {
-//         printf("Ошибка: ожидается '{' после условия While\n");
-//         return NULL;
-//     }
-//     //pBuf++;
-//
-//      if (BUF_V != SCOBKA) {
-//         printf("Ошибка: ожидается '(' после блока While\n");
-//     }
-//     pBuf++;
-//
-//     Node* condition = GetA(tokens);
-//
-//     if (BUF_V != SCOBKA) {
-//         printf("Ошибка: ожидается ')' после блока While\n");
-//     }
-//     pBuf++;
-//
-//     whileNode->left = condition;
-//     whileNode->right = uslovie;
-//
-//     return whileNode;
-// }
 
 Node* GetOp(Node* tokens) {
-    fprintf(LOG_FILE, "я нахожусь в GetWhile, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
-    printf("tokens[] = %d\n", tokens[pBuf].value);
     Node* whileNode = &tokens[pBuf++];
-    fprintf(LOG_FILE, "я собираюсь вызвать GetE, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
-
-    if (BUF_V != SCOBKA) {
-        printf("Ошибка: ожидается '(' после блока While\n");
-    }
-    pBuf++;
 
     Node* condition = GetA(tokens);
 
-    if (BUF_V != SCOBKA) {
+    if (BUF_V != BRACKET) {
         printf("Ошибка: ожидается ')' после блока While\n");
     }
     pBuf++;
 
-    fprintf(LOG_FILE, "я после вызова GetE, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
-
-    if (BUF_V != OPEN_BRACE) {
-        printf("Ошибка: ожидается '{' после условия While\n");
-        return NULL;
-    }
-
-    pBuf++;  // Пропустить '{'
+//     if (BUF_V != OPEN_BRACE) {
+//         printf("Ошибка: ожидается '{' после условия While\n");
+//         return NULL;
+//     }
+//
+//     pBuf++;  // Пропустить '{'
 
     whileNode->left = condition;
     whileNode->right = GetBody(tokens);
@@ -321,10 +244,10 @@ Node* GetP(Node* tokens)
 {
     Node* node = NULL;
 
-    if (BUF_V == SCOBKA) {
+    if (BUF_V == BRACKET) {
         pBuf++;
         node = GetE(tokens);
-        if (BUF_V != SCOBKA) printf("ошибкаP\n");
+        if (BUF_V != BRACKET) printf("ошибкаP\n");
         pBuf++;
     }
     else if (BUF_T == OPERAT || BUF_T == VAR) {
@@ -441,11 +364,11 @@ void TokenInizial(Node* tokens)
         switch(s[p])
         {
             case '(':
-                INIT(OPERAT, SCOBKA);
+                INIT(OPERAT, BRACKET);
                 p++;
                 break;
             case ')':
-                INIT(OPERAT, SCOBKA);
+                INIT(OPERAT, BRACKET);
                 p++;
                 break;
             case '{':

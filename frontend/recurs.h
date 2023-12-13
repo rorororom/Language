@@ -46,14 +46,14 @@ Node* GetBody(Node* tokens);
 //     }
 //     //pBuf++;
 //
-//      if (BUF_V != SCOBKA) {
+//      if (BUF_V != BRACKET) {
 //         printf("Ошибка: ожидается '(' после блока While\n");
 //     }
 //     pBuf++;
 //
 //     Node* condition = GetA(tokens);
 //
-//     if (BUF_V != SCOBKA) {
+//     if (BUF_V != BRACKET) {
 //         printf("Ошибка: ожидается ')' после блока While\n");
 //     }
 //     pBuf++;

@@ -1,13 +1,12 @@
-5 with count;
-whisper (5 < count) {
-    factorial energy count with factorial;
-    count harmony 1 energy 5 with count;
-    count harmony 20 with coutn;
-    spell (6 < count) {
-        count energy 5 with count;
-    }
-}
-500 with count;
-
+1 harmony 20 with count winx
+whisper 5 < count glinksi
+    factorial energy count with factorial winx
+    count harmony 1 energy 5 with count winx
+    count harmony 20 with coutn winx
+    spell 6 < count glinksi
+        count energy 5 with count winx
+    blinksi
+blinksi
+1 harmony 20 with count winx
 
 

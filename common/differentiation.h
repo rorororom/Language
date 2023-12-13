@@ -46,7 +46,7 @@ typedef struct Differ {
 
 enum OPERATION{
     OperError = -6,
-    SCOBKA,
+    BRACKET,
     OPEN_BRACE,
     CLOSE_BRACE,
     SLASH,

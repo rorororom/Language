@@ -94,12 +94,12 @@ Node* GetG(Node* tokens) {
 
 Node* GetIf(Node* tokens) {
     Node* ifNode = &tokens[pBuf++];
-    if (BUF_V != SCOBKA) {
+    if (BUF_V != BRACKET) {
         printf("Ошибка: ожидается '}' после блока While\n");
     }
     pBuf++;
     Node* condition = GetA(tokens);
-    if (BUF_V != SCOBKA) {
+    if (BUF_V != BRACKET) {
         printf("Ошибка: ожидается '}' после блока While\n");
     }
     pBuf++;
@@ -168,14 +168,14 @@ Node* GetBody(Node* tokens)
 //     }
 //     //pBuf++;
 //
-//      if (BUF_V != SCOBKA) {
+//      if (BUF_V != BRACKET) {
 //         printf("Ошибка: ожидается '(' после блока While\n");
 //     }
 //     pBuf++;
 //
 //     Node* condition = GetA(tokens);
 //
-//     if (BUF_V != SCOBKA) {
+//     if (BUF_V != BRACKET) {
 //         printf("Ошибка: ожидается ')' после блока While\n");
 //     }
 //     pBuf++;
@@ -191,14 +191,14 @@ Node* GetWhile(Node* tokens) {
     Node* whileNode = &tokens[pBuf++];
     fprintf(LOG_FILE, "я собираюсь вызвать GetE, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
 
-    if (BUF_V != SCOBKA) {
+    if (BUF_V != BRACKET) {
         printf("Ошибка: ожидается '(' после блока While\n");
     }
     pBuf++;
 
     Node* condition = GetA(tokens);
 
-    if (BUF_V != SCOBKA) {
+    if (BUF_V != BRACKET) {
         printf("Ошибка: ожидается ')' после блока While\n");
     }
     pBuf++;
@@ -312,10 +312,10 @@ Node* GetP(Node* tokens)
 {
     Node* node = NULL;
 
-    if (BUF_V == SCOBKA) {
+    if (BUF_V == BRACKET) {
         pBuf++;
         node = GetE(tokens);
-        if (BUF_V != SCOBKA) printf("ошибкаP\n");
+        if (BUF_V != BRACKET) printf("ошибкаP\n");
         pBuf++;
     }
     else if (BUF_T == OPERAT || BUF_T == VAR) {
@@ -432,11 +432,11 @@ void TokenInizial(Node* tokens)
         switch(s[p])
         {
             case '(':
-                INIT(OPERAT, SCOBKA);
+                INIT(OPERAT, BRACKET);
                 p++;
                 break;
             case ')':
-                INIT(OPERAT, SCOBKA);
+                INIT(OPERAT, BRACKET);
                 p++;
                 break;
             case '{':
