@@ -1,7 +1,8 @@
+1 with count winx
 1 with factorial winx
-whisper 6 < factorial glinksi
-    factorial energy factorial with factorial winx
-    factorial harmony 1 with factorial winx
+whisper 7 < count glinksi
+    factorial energy count with factorial winx
+    count harmony 1 with count winx
 blinksi
 
 

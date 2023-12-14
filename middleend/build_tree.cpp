@@ -73,7 +73,7 @@ int BuildTreeMiddleEnd(char* filename, Differ* differ_before) {
         printf("%d: type = %d, values = %d\n", i, tokens[i].type, tokens[i].value);
     }
     pBuf = 0;
-    Node* node = GetG(tokens);
+    Node* node = ParseInputTokens(tokens);
 
     differ_before->tree->rootTree = node;
     differ_before->variables = &arrayVar;
@@ -82,11 +82,11 @@ int BuildTreeMiddleEnd(char* filename, Differ* differ_before) {
 }
 
 
-Node* GetG(Node* tokens) {
+Node* ParseInputTokens(Node* tokens) {
     Node* node = NULL;
-    fprintf(LOG_FILE, "я нахожусь в GetG, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
+    fprintf(LOG_FILE, "я нахожусь в ParseInputTokens, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
 
-    node = GetBody(tokens);
+    node = ExtractStatementBody(tokens);
 
     if (BUF_V != END) printf("ошибкаG\n");
     return node;
@@ -98,7 +98,7 @@ Node* GetIf(Node* tokens) {
         printf("Ошибка: ожидается '}' после блока While\n");
     }
     pBuf++;
-    Node* condition = GetA(tokens);
+    Node* condition = GetAddition(tokens);
     if (BUF_V != BRACKET) {
         printf("Ошибка: ожидается '}' после блока While\n");
     }
@@ -111,12 +111,12 @@ Node* GetIf(Node* tokens) {
     pBuf++;  // Пропустить '{'
 
     ifNode->left = condition;
-    ifNode->right = GetBody(tokens);
+    ifNode->right = ExtractStatementBody(tokens);
 
     return ifNode;
 }
 
-Node* GetBody(Node* tokens)
+Node* ExtractStatementBody(Node* tokens)
 {
     CREAT_NODE(whileBodyNode);
     InitializeNode(whileBodyNode, OPERAT, SEMICOLON, NULL, NULL, NULL);
@@ -125,13 +125,13 @@ Node* GetBody(Node* tokens)
 
     while (BUF_V != CLOSE_BRACE && BUF_V != END) {
         if (BUF_V == WHILE) {
-            Node* nestedWhile = GetWhile(tokens);
+            Node* nestedWhile = GetExpressionWithPowerhile(tokens);
             currentNode->left = nestedWhile;
         } else if (BUF_V == IF) {
             Node* nestedIf = GetIf(tokens);
             currentNode->left = nestedIf;
         } else {
-            Node* statement = GetA(tokens);
+            Node* statement = GetAddition(tokens);
             currentNode->left = statement;
         }
 
@@ -147,12 +147,12 @@ Node* GetBody(Node* tokens)
     return whileBodyNode;
 }
 
-// Node* GetWhile(Node* tokens) {
-//     fprintf(LOG_FILE, "я нахожусь в GetWhile, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
+// Node* GetExpressionWithPowerhile(Node* tokens) {
+//     fprintf(LOG_FILE, "я нахожусь в GetExpressionWithPowerhile, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
 //     Node* whileNode = &tokens[pBuf++];
-//     fprintf(LOG_FILE, "я собираюсь вызвать GetE, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
+//     fprintf(LOG_FILE, "я собираюсь вызвать GetExpression, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
 //
-//     fprintf(LOG_FILE, "я после вызова GetE, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
+//     fprintf(LOG_FILE, "я после вызова GetExpression, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
 //
 //     if (BUF_V != OPEN_BRACE) {
 //         printf("Ошибка: ожидается '{' после условия While\n");
@@ -160,7 +160,7 @@ Node* GetBody(Node* tokens)
 //     }
 //     pBuf++;  // Пропустить '{'
 //
-//     Node* uslovie = GetBody(tokens);
+//     Node* uslovie = ExtractStatementBody(tokens);
 //
 //     if (BUF_V != CLOSE_BRACE) {
 //         printf("Ошибка: ожидается '{' после условия While\n");
@@ -173,7 +173,7 @@ Node* GetBody(Node* tokens)
 //     }
 //     pBuf++;
 //
-//     Node* condition = GetA(tokens);
+//     Node* condition = GetAddition(tokens);
 //
 //     if (BUF_V != BRACKET) {
 //         printf("Ошибка: ожидается ')' после блока While\n");
@@ -186,24 +186,24 @@ Node* GetBody(Node* tokens)
 //     return whileNode;
 // }
 
-Node* GetWhile(Node* tokens) {
-    fprintf(LOG_FILE, "я нахожусь в GetWhile, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
+Node* GetExpressionWithPowerhile(Node* tokens) {
+    fprintf(LOG_FILE, "я нахожусь в GetExpressionWithPowerhile, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
     Node* whileNode = &tokens[pBuf++];
-    fprintf(LOG_FILE, "я собираюсь вызвать GetE, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
+    fprintf(LOG_FILE, "я собираюсь вызвать GetExpression, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
 
     if (BUF_V != BRACKET) {
         printf("Ошибка: ожидается '(' после блока While\n");
     }
     pBuf++;
 
-    Node* condition = GetA(tokens);
+    Node* condition = GetAddition(tokens);
 
     if (BUF_V != BRACKET) {
         printf("Ошибка: ожидается ')' после блока While\n");
     }
     pBuf++;
 
-    fprintf(LOG_FILE, "я после вызова GetE, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
+    fprintf(LOG_FILE, "я после вызова GetExpression, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
 
     if (BUF_V != OPEN_BRACE) {
         printf("Ошибка: ожидается '{' после условия While\n");
@@ -213,7 +213,7 @@ Node* GetWhile(Node* tokens) {
     pBuf++;  // Пропустить '{'
 
     whileNode->left = condition;
-    whileNode->right = GetBody(tokens);
+    whileNode->right = ExtractStatementBody(tokens);
 
     return whileNode;
 }
@@ -227,18 +227,18 @@ Node* GetId(Node* tokens)
     else return NULL;
 }
 
-Node* GetA(Node* tokens)
+Node* GetAddition(Node* tokens)
 {
     int old_p = pBuf;
     Node* node = GetId(tokens);
     if (node == NULL)
     {
-        node = GetE(tokens);
+        node = GetExpression(tokens);
     }
     else if (tokens[pBuf].value != EQ && tokens[pBuf].value != MORE && tokens[pBuf].value != LESS)
     {
         pBuf = old_p;
-        node = GetE(tokens);
+        node = GetExpression(tokens);
     }
     else {
         Node* main;
@@ -250,7 +250,7 @@ Node* GetA(Node* tokens)
             main = &tokens[pBuf];
             pBuf++;
         }
-        Node* node2 = GetE(tokens);
+        Node* node2 = GetExpression(tokens);
         Node* nodeL = node;
         node = main;
         node->left = nodeL;
@@ -260,14 +260,14 @@ Node* GetA(Node* tokens)
 }
 
 
-Node* GetE(Node* tokens)
+Node* GetExpression(Node* tokens)
 {
-    Node* node = GetT(tokens);
+    Node* node = GetTerm(tokens);
 
     while (BUF_V == ADD || BUF_V == SUB) {
         int old_p = pBuf;
         pBuf++;
-        Node* node2 = GetT(tokens);
+        Node* node2 = GetTerm(tokens);
 
         BUF_L = node;
         BUF_R = node2;
@@ -276,14 +276,14 @@ Node* GetE(Node* tokens)
     return node;
 }
 
-Node* GetT(Node* tokens)
+Node* GetTerm(Node* tokens)
 {
-    Node* node = GetW(tokens);
+    Node* node = GetExpressionWithPower(tokens);
 
     while (BUF_V == MUL || BUF_V == DIV || BUF_V == POW) {
         int old_p = pBuf;
         pBuf++;
-        Node* node2 = GetW(tokens);
+        Node* node2 = GetExpressionWithPower(tokens);
 
         BUF_L = node;
         BUF_R = node2;
@@ -292,7 +292,7 @@ Node* GetT(Node* tokens)
     return node;
 }
 
-Node* GetW(Node* tokens)
+Node* GetExpressionWithPower(Node* tokens)
 {
     Node* node = GetP(tokens);
 
@@ -314,27 +314,27 @@ Node* GetP(Node* tokens)
 
     if (BUF_V == BRACKET) {
         pBuf++;
-        node = GetE(tokens);
+        node = GetExpression(tokens);
         if (BUF_V != BRACKET) printf("ошибкаP\n");
         pBuf++;
     }
     else if (BUF_T == OPERAT || BUF_T == VAR) {
-        node = GetO(tokens);
+        node = GetOparat(tokens);
         if (node->type == OPERAT)
             node->left = GetP(tokens);
     }
     else {
-        node = GetN(tokens);
+        node = GetNumber(tokens);
     }
     return node;
 }
 
-Node* GetN(Node* tokens)
+Node* GetNumber(Node* tokens)
 {
     return &tokens[pBuf++];
 }
 
-Node* GetO(Node* tokens)
+Node* GetOparat(Node* tokens)
 {
     for (int i = 0; i < arrayVar.size; i++) {
         if (arrayVar.data[i].type == OPERAT) {
@@ -346,7 +346,7 @@ Node* GetO(Node* tokens)
     return &tokens[pBuf++];
 }
 
-int GetNUM()
+int GetNumFromMyLanguage()
 {
     int val = 0;
     while ('0' <= s[p] && s[p] <= '9') {
@@ -386,7 +386,7 @@ void AddVariableVar(Variables* arrayVar, int type, int value, const char* name) 
 
 #define INIT(type, val) InitializeNode(&tokens[pBuf++], type, val, NULL, NULL, NULL);
 
-void GetOPERAT(Node* tokens)
+void GetOparatperatFromMyLanguage(Node* tokens)
 {
     int flagMatch = 0;
     char token[OP_LEN] = "";
@@ -465,7 +465,7 @@ void TokenInizial(Node* tokens)
             //     break;
             case '0': case '1': case '2': case '3': case '4':
             case '5': case '6': case '7': case '8': case '9':
-                num = GetNUM();
+                num = GetNumFromMyLanguage();
                 INIT(INT, num);
                 break;
             case '+':
@@ -507,7 +507,7 @@ void TokenInizial(Node* tokens)
             default:
             {
                 if ('a' <= s[p] && s[p] <= 'z') {
-                    GetOPERAT(tokens);
+                    GetOparatperatFromMyLanguage(tokens);
                 }
                 else SkipSpaces();
                 break;

@@ -70,16 +70,7 @@ void TreeAndVarieblesDtor(Differ* differ)
     assert(differ->tree);
     assert(differ->variables);
 
-    DestroyNode(differ->tree->rootTree);
     differ->tree->rootTree = nullptr;
-
-    for (size_t i = 0; i < differ->variables->capacity; ++i)
-    {
-        if (differ->variables->data->name) free(differ->variables->data->name);
-
-        differ->variables->data[i].name = nullptr;
-        differ->variables->data[i].value = ZERO;
-    }
 
     free(differ->variables->data);
     differ->variables->data     = nullptr;
@@ -89,12 +80,10 @@ void TreeAndVarieblesDtor(Differ* differ)
 
 static void DestroyNode(Node* node)
 {
-    assert(node);
-
-    if (node->left != nullptr) {
+    if (node->left != NULL) {
         DestroyNode(node->left);
     }
-    if (node->right != nullptr) {
+    if (node->right != NULL) {
         DestroyNode(node->right);
     }
 
@@ -349,7 +338,7 @@ char* FromOperationToWord(int operation)
     }
 }
 
-char* GetWord(Buffer* array)
+char* GetExpressionWithPowerord(Buffer* array)
 {
     assert(array);
 
@@ -429,19 +418,19 @@ int CheckingPriorityOperation(int operation)
 
 Node* ReadFromBufferInf(Buffer* array, Node* currentNode, Variables* arrayVar)
 {
-    char* token = GetWord(array);
+    char* token = GetExpressionWithPowerord(array);
 
     if (strcmp(token, "(") == 0) {
         CREAT_NODE(newNode);
         newNode->left = ReadFromBufferInf(array, newNode, arrayVar);
 
-        token = GetWord(array);
+        token = GetExpressionWithPowerord(array);
         SetNodeTypeAndValue(newNode, token, arrayVar);
 
         newNode->parent = currentNode;
 
         newNode->right = ReadFromBufferInf(array, newNode, arrayVar);
-        token = GetWord(array);
+        token = GetExpressionWithPowerord(array);
         return newNode;
     }
     else if (strcmp(token, "nil") == 0) {
@@ -648,18 +637,18 @@ int GenerateRandomNumber(int min, int max)
 
 // Node* ReadFromBuffer(Buffer* array, Node* currentNode)
 // {
-//     char* token = GetWord(array);
+//     char* token = GetExpressionWithPowerord(array);
 //     if (strcmp(token, "(") == 0)
 //     {
 //         CREAT_NODE(newNode);
-//         token = GetWord(array);
+//         token = GetExpressionWithPowerord(array);
 //         SetNodeTypeAndValue(newNode, token);
 //
 //         newNode->parent = currentNode;
 //
 //         newNode->left = ReadFromBuffer(array, newNode);
 //         newNode->right = ReadFromBuffer(array, newNode);
-//         token = GetWord(array);
+//         token = GetExpressionWithPowerord(array);
 //         return newNode;
 //     }
 //     else if (strcmp(token, "nil") == 0)

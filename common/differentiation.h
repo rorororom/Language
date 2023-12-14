@@ -107,7 +107,7 @@ Node* ReadFromBufferInf(Buffer* array, Node* currentNode, Variables* arrayVar);
 void BuildTreeFromFile(const char* filename, Differ* differ);
 
 //Node* ReadFromBuffer(Buffer* array, Node* currentNode);
-char* GetWord(Buffer* array);
+char* GetExpressionWithPowerord(Buffer* array);
 
 //Node* BuildTreeFromBuffer(struct Buffer* array, int* index, Variables* arrayVar);
 void SetNodeTypeAndValue(Node* node, char* value, Variables* arrayVar);

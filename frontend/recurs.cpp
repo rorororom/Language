@@ -83,7 +83,7 @@ int BuildTREEEE(char* filename, Differ* differ_before)
         printf("%d: type = %d, values = %d\n", i, tokens[i].type, tokens[i].value);
     }
     pBuf = 0;
-    Node* node = GetG(tokens);
+    Node* node = ParseInputTokens(tokens);
 
     differ_before->tree->rootTree = node;
     differ_before->variables = &arrayVar;
@@ -92,17 +92,17 @@ int BuildTREEEE(char* filename, Differ* differ_before)
 }
 
 
-Node* GetG(Node* tokens) {
+Node* ParseInputTokens(Node* tokens) {
     Node* node = NULL;
-    fprintf(LOG_FILE, "я нахожусь в GetG, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
+    fprintf(LOG_FILE, "я нахожусь в ParseInputTokens, pbuf = %d, token = %d\n", pBuf, tokens[pBuf]);
 
-    node = GetBody(tokens);
+    node = ExtractStatementBody(tokens);
 
     if (BUF_V != END) printf("ошибкаG\n");
     return node;
 }
 
-Node* GetBody(Node* tokens)
+Node* ExtractStatementBody(Node* tokens)
 {
     CREAT_NODE(whileBodyNode);
     InitializeNode(whileBodyNode, OPERAT, SEMICOLON, NULL, NULL, NULL);
@@ -111,13 +111,10 @@ Node* GetBody(Node* tokens)
 
     while (BUF_V != CLOSE_BRACE && BUF_V != END) {
         if (BUF_V == WHILE || BUF_V == IF) {
-            Node* nestedWhile = GetOp(tokens);
+            Node* nestedWhile = GetOparatp(tokens);
             currentNode->left = nestedWhile;
-        // } else if (BUF_V == IF) {
-        //     Node* nestedIf = GetIf(tokens);
-        //     currentNode->left = nestedIf;
         } else {
-            Node* statement = GetA(tokens);
+            Node* statement = GetAddition(tokens);
             currentNode->left = statement;
         }
 
@@ -135,25 +132,18 @@ Node* GetBody(Node* tokens)
 }
 
 
-Node* GetOp(Node* tokens) {
+Node* GetOparatp(Node* tokens) {
     Node* whileNode = &tokens[pBuf++];
 
-    Node* condition = GetA(tokens);
+    Node* condition = GetAddition(tokens);
 
     if (BUF_V != BRACKET) {
         printf("Ошибка: ожидается ')' после блока While\n");
     }
     pBuf++;
 
-//     if (BUF_V != OPEN_BRACE) {
-//         printf("Ошибка: ожидается '{' после условия While\n");
-//         return NULL;
-//     }
-//
-//     pBuf++;  // Пропустить '{'
-
     whileNode->left = condition;
-    whileNode->right = GetBody(tokens);
+    whileNode->right = ExtractStatementBody(tokens);
 
     return whileNode;
 }
@@ -167,10 +157,10 @@ Node* GetId(Node* tokens)
     else return NULL;
 }
 
-Node* GetA(Node* tokens)
+Node* GetAddition(Node* tokens)
 {
     int old_p = pBuf;
-    Node* node = GetE(tokens);
+    Node* node = GetExpression(tokens);
     if ((tokens[pBuf].value  == EQ    ||
          tokens[pBuf].value  == MORE  ||
          tokens[pBuf].value  == LESS) &&
@@ -179,7 +169,7 @@ Node* GetA(Node* tokens)
         Node* main = &tokens[pBuf];
         pBuf++;
 
-        Node* node2 = GetE(tokens);
+        Node* node2 = GetExpression(tokens);
         Node* nodeL = node;
         node = main;
         node->left = node2;
@@ -187,19 +177,19 @@ Node* GetA(Node* tokens)
     }
     else {
         pBuf = old_p;
-        node = GetE(tokens);
+        node = GetExpression(tokens);
     }
     return node;
 }
 
-Node* GetE(Node* tokens)
+Node* GetExpression(Node* tokens)
 {
-    Node* node = GetT(tokens);
+    Node* node = GetTerm(tokens);
 
     while (BUF_V == ADD || BUF_V == SUB) {
         int old_p = pBuf;
         pBuf++;
-        Node* node2 = GetT(tokens);
+        Node* node2 = GetTerm(tokens);
 
         BUF_L = node;
         BUF_R = node2;
@@ -208,14 +198,14 @@ Node* GetE(Node* tokens)
     return node;
 }
 
-Node* GetT(Node* tokens)
+Node* GetTerm(Node* tokens)
 {
-    Node* node = GetW(tokens);
+    Node* node = GetExpressionWithPower(tokens);
 
     while (BUF_V == MUL || BUF_V == DIV || BUF_V == POW) {
         int old_p = pBuf;
         pBuf++;
-        Node* node2 = GetW(tokens);
+        Node* node2 = GetExpressionWithPower(tokens);
 
         BUF_L = node;
         BUF_R = node2;
@@ -224,7 +214,7 @@ Node* GetT(Node* tokens)
     return node;
 }
 
-Node* GetW(Node* tokens)
+Node* GetExpressionWithPower(Node* tokens)
 {
     Node* node = GetP(tokens);
 
@@ -246,27 +236,27 @@ Node* GetP(Node* tokens)
 
     if (BUF_V == BRACKET) {
         pBuf++;
-        node = GetE(tokens);
+        node = GetExpression(tokens);
         if (BUF_V != BRACKET) printf("ошибкаP\n");
         pBuf++;
     }
     else if (BUF_T == OPERAT || BUF_T == VAR) {
-        node = GetO(tokens);
+        node = GetOparat(tokens);
         if (node->type == OPERAT)
             node->left = GetP(tokens);
     }
     else {
-        node = GetN(tokens);
+        node = GetNumber(tokens);
     }
     return node;
 }
 
-Node* GetN(Node* tokens)
+Node* GetNumber(Node* tokens)
 {
     return &tokens[pBuf++];
 }
 
-Node* GetO(Node* tokens)
+Node* GetOparat(Node* tokens)
 {
     for (int i = 0; i < arrayVar.size; i++) {
         if (arrayVar.data[i].type == OPERAT) {
@@ -278,7 +268,7 @@ Node* GetO(Node* tokens)
     return &tokens[pBuf++];
 }
 
-int GetNUM()
+int GetNumFromMyLanguage()
 {
     int val = 0;
     while ('0' <= s[p] && s[p] <= '9') {
@@ -318,7 +308,7 @@ void AddVariableVar(Variables* arrayVar, int type, int value, const char* name) 
 
 #define INIT(type, val) InitializeNode(&tokens[pBuf++], type, val, NULL, NULL, NULL);
 
-void GetOPERAT(Node* tokens)
+void GetOparatperatFromMyLanguage(Node* tokens)
 {
     int flagMatch = 0;
     char token[OP_LEN] = "";
@@ -363,22 +353,6 @@ void TokenInizial(Node* tokens)
     {
         switch(s[p])
         {
-            case '(':
-                INIT(OPERAT, BRACKET);
-                p++;
-                break;
-            case ')':
-                INIT(OPERAT, BRACKET);
-                p++;
-                break;
-            case '{':
-                INIT(OPERAT, OPEN_BRACE);
-                p++;
-                break;
-            case '}':
-                INIT(OPERAT, CLOSE_BRACE);
-                p++;
-                break;
             case '\0':
                 if (p < size) {
                     p++;
@@ -389,15 +363,9 @@ void TokenInizial(Node* tokens)
                     p++;
                     break;
                 }
-            // case '\n':
-            //     LINE_COUNT++;
-            //     p++;
-            //     printf("asdf\n");
-            //     if (s[p] == '\0') p++;
-            //     break;
             case '0': case '1': case '2': case '3': case '4':
             case '5': case '6': case '7': case '8': case '9':
-                num = GetNUM();
+                num = GetNumFromMyLanguage();
                 INIT(INT, num);
                 break;
             case '>':
@@ -408,14 +376,10 @@ void TokenInizial(Node* tokens)
                 INIT(OPERAT, LESS);
                 p++;
                 break;
-            case ';':
-                INIT(OPERAT, SEMICOLON);
-                p++;
-                break;
             default:
             {
                 if ('a' <= s[p] && s[p] <= 'z') {
-                    GetOPERAT(tokens);
+                    GetOparatperatFromMyLanguage(tokens);
                 }
                 else SkipSpaces();
                 break;
