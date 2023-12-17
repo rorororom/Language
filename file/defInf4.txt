@@ -1,4 +1,4 @@
-1 with count winx
+1 harmony 5 energy 2 with count winx
 1 with factorial winx
 whisper 7 < count glinksi
     factorial energy count with factorial winx

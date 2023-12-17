@@ -1,4 +1,4 @@
-count = 1 ;
+count = 1 + 5 * 2 ;
 factorial = 1 ;
 if ( count @ 7 )
 { factorial = factorial * count ;

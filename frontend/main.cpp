@@ -39,3 +39,7 @@ int main()
 
     TreeAndVarieblesDtor(&differ_before);
 }
+
+
+	// cd backend/ && ./compiler.out
+	// cd backend2/ && ./cpu.out

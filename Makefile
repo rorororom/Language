@@ -17,8 +17,6 @@ backend2:
 run:
 	cd frontend/ && ./frontend.out
 	cd middleend/ && ./middleend.out
-	cd backend/ && ./compiler.out
-	cd backend2/ && ./cpu.out
 
 clean:
 	cd middleend && make clean && cd ..
