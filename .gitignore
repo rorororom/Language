@@ -1,0 +1,5 @@
+*.out
+middleend/obj/
+frontend/obj/
+backend/obj/
+backend1/obj/
